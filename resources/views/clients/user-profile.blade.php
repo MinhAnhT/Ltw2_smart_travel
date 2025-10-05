@@ -32,7 +32,7 @@
                                 <div class="col-md-12">
                                     <label class="small mb-1" for="inputFullName">Họ và tên</label>
                                     <input class="form-control" id="inputFullName" type="text"
-                                        placeholder="Họ và tên" value="{{ $user->fullName }}" required>
+                                        placeholder="Họ và tên" value="{{ $user->fullname }}" required>
                                 </div>
                             </div>
                             @csrf
@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputPhone">Phone number</label>
                                     <input class="form-control" id="inputPhone" type="number"
-                                        placeholder="Số điện thoại" value="{{ $user->phoneNumber }}" required>
+                                        placeholder="Số điện thoại" value="{{ $user->phone }}" required>
                                 </div>
                             </div>
 

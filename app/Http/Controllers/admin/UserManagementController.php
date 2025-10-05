@@ -22,8 +22,8 @@ class UserManagementController extends Controller
         $users = $this->users->getAllUsers();
 
         foreach ($users as $user) {
-            if (!$user->fullName) {
-                $user->fullName = "Unnamed";
+            if (!$user->fullname) {
+                $user->fullname = "Unnamed";
             }
             if (!$user->avatar) {
                 $user->avatar = 'unnamed.png';

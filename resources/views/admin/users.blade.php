@@ -33,11 +33,11 @@
                                     <div class="col-sm-12">
                                         <h4 class="brief"><i>{{ $user->isActive }}</i></h4>
                                         <div class="left col-md-7 col-sm-7">
-                                            <h2>{{ $user->fullName }}</h2>
+                                            <h2>{{ $user->fullname }}</h2>
                                             <p><strong>About: </strong> {{ $user->username }} </p>
                                             <ul class="list-unstyled">
                                                 <li><i class="fa fa-building"></i> Address: {{ $user->address }}</li>
-                                                <li><i class="fa fa-phone"></i> Phone #: {{ $user->phoneNumber }}</li>
+                                                <li><i class="fa fa-phone"></i> Phone #: {{ $user->phone }}</li>
                                             </ul>
                                         </div>
                                         <div class="right col-md-5 col-sm-5 text-center">

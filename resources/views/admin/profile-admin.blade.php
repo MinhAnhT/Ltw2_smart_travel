@@ -54,12 +54,12 @@
                                     <label for="avatarAdmin" id="btn_avatar" class="btn btn-success"
                                         style=" align-items: center; text-align: center; width: 78%;margin: 10px 24px;" action={{ route('admin.update-avatar') }}>
                                         <i class="fa fa-edit m-right-xs"></i>Tải ảnh lên</label>
-                                    <h3 id="nameAdmin">{{ $admin->fullName }}</h3>
+                                    <h3 id="nameAdmin">{{ $admin->fullname }}</h3>
 
                                     <ul class="list-unstyled user_data">
                                         <li>
-                                            <i class="fa fa-map-marker user-profile-icon"></i> <span
-                                                id="emailAdmin">{{ $admin->address }}</span>
+                                            <i class="fa fa-map-marker user-profile-icon"></i> Địa chỉ: <span
+                                                id="emailAdmin">{{ $admin->address ?? 'Chưa cập nhật' }}</span>
                                         </li>
                                         <li>
                                             <i class="fa fa-briefcase user-profile-icon"></i> <span
@@ -80,7 +80,7 @@
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" id="fullName" name="fullName" required
                                                     class="form-control" placeholder="Nhập tên admin"
-                                                    value="{{ $admin->fullName }}">
+                                                    value="{{ $admin->fullname }}">
                                             </div>
                                         </div>
 
