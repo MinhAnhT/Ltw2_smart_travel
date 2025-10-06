@@ -1,0 +1,111 @@
+/* --- Cài đặt chung --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4; /* Màu nền xám nhạt cho trang */
+}
+
+main {
+    max-width: 1200px; /* Giới hạn chiều rộng nội dung */
+    margin: 0 auto;    /* Căn giữa nội dung */
+    padding: 20px;
+}
+
+/* --- Thanh điều hướng (Navbar) --- */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 10px 0;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo img {
+    height: 40px;
+}
+
+.navbar-links a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.navbar-icons a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+/* --- Khu vực ảnh Hero --- */
+.hero-image-section {
+    margin-top: 20px;
+}
+
+.hero-image-section img {
+    width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của khung chứa */
+    height: auto;
+    border-radius: 16px; /* Bo tròn các góc ảnh */
+    display: block;
+}
+
+/* --- Khu vực Tìm kiếm --- */
+.search-section {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 20px;
+}
+
+.search-section h1 {
+    font-size: 2.5rem;
+    color: #222;
+    margin-bottom: 15px;
+}
+
+.search-section p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto 30px auto; /* Căn giữa và tạo khoảng cách */
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    overflow: hidden; /* Ẩn phần thừa của input và button */
+}
+
+.search-bar input {
+    flex-grow: 1; /* Input chiếm hết không gian còn lại */
+    padding: 15px 20px;
+    border: none;
+    font-size: 1rem;
+    outline: none; /* Bỏ viền xanh khi focus */
+}
+
+.search-bar button {
+    padding: 15px 30px;
+    border: none;
+    background-color: #ff5b00; /* Màu cam giống Klook */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+    background-color: #e65100; /* Màu cam đậm hơn khi hover */
+}

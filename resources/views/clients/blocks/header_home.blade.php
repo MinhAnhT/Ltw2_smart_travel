@@ -111,23 +111,7 @@
                             <!-- Main Menu End-->
                         </div>
 
-                        <!-- Nav Search -->
-                        <div class="nav-search">
-                            <button class="far fa-search"></button>
-                            <form action="{{ route('search-voice-text') }}" class="hide" method="GET">
-                                <input type="text" name="keyword" placeholder="Search" class="searchbox" required>
-                                <i class="fa fa-microphone" aria-hidden="true" style="margin: 0 16px"
-                                    id="voice-search"></i>
-                                <button type="submit" class="searchbutton far fa-search"></button>
-                            </form>
-                        </div>
-
                         <!-- Menu Button -->
-                        <div class="menu-btns py-10">
-                            <a href="{{ route('tours') }}" class="theme-btn style-two bgc-secondary">
-                                <span data-hover="Đặt Ngay">Book Now</span>
-                                <i class="fal fa-arrow-right"></i>
-                            </a>
                             <!-- menu sidbar -->
                             <div class="menu-sidebar">
                                 <li class="drop-down">

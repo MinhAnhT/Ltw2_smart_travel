@@ -4477,6 +4477,12 @@ h6, .h6, blockquote {
       -webkit-transition: 0.5s;
       -o-transition: 0.5s;
       transition: 0.5s; }
+    .tour-img-fix {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;}
     .destination-item .image .ratting {
       position: absolute;
       left: 0;
@@ -8235,3 +8241,27 @@ blockquote {
   justify-content: center; }
   .footer-bottom-nav li {
     margin: 0 13px 5px; }
+/* Fix tour image overflow on homepage */
+.tour-img-fix {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+/* Fix header always visible on scroll */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff; /* hoặc bgc-black nếu muốn nền đen */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.page-wrapper {
+    padding-top: 110px; /* Để nội dung không bị header che mất, chỉnh lại nếu header cao hơn/thấp hơn */
+}
