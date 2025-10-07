@@ -5,7 +5,18 @@
             <div class="image">
                 <span class="badge bgc-pink">Featured</span>
                 <a href="#" class="heart"><i class="fas fa-heart"></i></a>
-                <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0] . '') }}" alt="Tour List">
+                 {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
+                @if ($tour->images->isNotEmpty())
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0] . '') }}" 
+                        alt="{{ $tour->title ?? 'Tour List Image' }}">
+                @else
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" 
+                        alt="Ảnh đang cập nhật">
+                @endif
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+
             </div>
             <div class="content equal-content-fix">
                 <div class="destination-header">

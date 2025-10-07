@@ -23,29 +23,130 @@
         <div class="row gap-10 justify-content-center rel">
             <div class="col-lg-4 col-md-6">
                 <div class="gallery-item">
+                {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
+
+                {{-- Sửa: $tour thành $tourDetail --}}
+                @if ($tourDetail->images->isNotEmpty()) 
+
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    {{-- Sửa: $tour thành $tourDetail --}}
                     <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-                        alt="Destination">
-                </div>
+                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
+                @else
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
+
+                        alt="Ảnh đang cập nhật">
+
+                @endif
+
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+            </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[1] . '') }}"
-                        alt="Destination">
-                </div>
+                    {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
+
+                {{-- Sửa: $tour thành $tourDetail --}}
+                @if ($tourDetail->images->isNotEmpty()) 
+
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    {{-- Sửa: $tour thành $tourDetail --}}
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
+
+                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
+
+                @else
+
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
+
+                        alt="Ảnh đang cập nhật">
+
+                @endif
+
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+
+            </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="gallery-item gallery-between">
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[2] . '') }}"
-                        alt="Destination">
-                </div>
+                     {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
+
+                {{-- Sửa: $tour thành $tourDetail --}}
+                @if ($tourDetail->images->isNotEmpty()) 
+
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    {{-- Sửa: $tour thành $tourDetail --}}
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
+
+                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
+
+                @else
+
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
+
+                        alt="Ảnh đang cập nhật">
+
+                @endif
+
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+
+            </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="gallery-item">
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[3] . '') }}"
-                        alt="Destination">
-                </div>
+                    {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
+
+                {{-- Sửa: $tour thành $tourDetail --}}
+                @if ($tourDetail->images->isNotEmpty()) 
+
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    {{-- Sửa: $tour thành $tourDetail --}}
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
+
+                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
+
+                @else
+
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
+
+                        alt="Ảnh đang cập nhật">
+
+                @endif
+
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+
+            </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[4] . '') }}"
-                        alt="Destination">
-                </div>
+                     {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
+
+                {{-- Sửa: $tour thành $tourDetail --}}
+                @if ($tourDetail->images->isNotEmpty()) 
+
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    {{-- Sửa: $tour thành $tourDetail --}}
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
+
+                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
+
+                @else
+
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
+
+                        alt="Ảnh đang cập nhật">
+
+                @endif
+
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+
+            </div>
             </div>
         </div>
     </div>
@@ -139,11 +240,11 @@
                         <div class="accordion-item">
                             <h5 class="accordion-header">
                                 <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo{{ $timeline->timeLineId }}">
+                                    data-bs-target="#collapseTwo{{ $timeline->timelineId }}">
                                     Ngày {{ $day++ }} - {{ $timeline->title }}
                                 </button>
                             </h5>
-                            <div id="collapseTwo{{ $timeline->timeLineId }}" class="accordion-collapse collapse"
+                            <div id="collapseTwo{{ $timeline->timelineId }}" class="accordion-collapse collapse"
                                 data-bs-parent="#faq-accordion-two">
                                 <div class="accordion-body">
                                     <p>{!! $timeline->description !!}</p>

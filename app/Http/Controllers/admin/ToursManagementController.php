@@ -157,8 +157,9 @@ class ToursManagementController extends Controller
                 if ($request->has($itineraryKey)) {
                     $timelines[] = [
                         'tourId' => $tourId,
+                        'dayNumber' => (int)$dayNumber, // 👈 THÊM DÒNG NÀY ĐỂ TRUYỀN GIÁ TRỊ SỐ NGÀY
                         'title' => $value,
-                        'description' => $request->input($itineraryKey),
+                        'content' => $request->input($itineraryKey),
                     ];
                 }
             }
@@ -312,7 +313,7 @@ class ToursManagementController extends Controller
                 $data = [
                     'tourId' => $tourId,
                     'title' => $timeline['title'],
-                    'description' => $timeline['itinerary']
+                    'content' => $timeline['itinerary']
                 ];
 
                 $this->tours->addTimeLine($data);  // Gọi phương thức addTimeLine()

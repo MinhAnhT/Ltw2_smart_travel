@@ -32,9 +32,18 @@
                     <div class="destination-item style-two" data-aos-duration="1500" data-aos-offset="50">
                         <div class="image" style="max-height: 250px">
                             <a href="#" class="heart"><i class="fas fa-heart"></i></a>
-                            <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0]) }}"
-                                alt="Destination">
-                        </div>
+                             @if ($tour->images->isNotEmpty())
+                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0] . '') }}" 
+                        alt="{{ $tour->title ?? 'Tour List Image' }}">
+                @else
+                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" 
+                        alt="Ảnh đang cập nhật">
+                @endif
+                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
+
+            </div>
                         <div class="content">
                             <h6 class="tour-title"><a
                                     href="{{ route('tour-detail', ['id' => $tour->tourId]) }}">{{ $tour->title }}</a>
