@@ -18,139 +18,122 @@
     </div>
 </section>
 <!-- Tour Gallery start -->
+ <style>
+    /* Bạn nên chuyển đoạn CSS này vào file CSS chung của dự án */
+    .tour-gallery-five {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr; /* Cột 1 rộng gấp đôi 2 cột còn lại */
+        grid-template-rows: 1fr 1fr; /* 2 hàng có chiều cao bằng nhau */
+        gap: 10px; /* Khoảng cách giữa các ảnh */
+        height: 550px; /* Điều chỉnh chiều cao tổng thể của gallery */
+        border-radius: 12px;
+        overflow: hidden; /* Đảm bảo các ảnh bo góc theo container */
+    }
+
+    .tour-gallery-five .gallery-item {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .tour-gallery-five .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Giữ tỷ lệ ảnh, không bị méo */
+        transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+    }
+
+    .tour-gallery-five .gallery-item:hover img {
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        filter: brightness(0.9); /* Hơi tối ảnh đi một chút */
+    }
+
+    /* Định vị từng ảnh vào lưới */
+    .tour-gallery-five .item-1 {
+        grid-column: 1 / 2; /* Chiếm từ cột 1 đến trước cột 2 */
+        grid-row: 1 / 3;    /* Chiếm từ hàng 1 đến trước hàng 3 (2 hàng) */
+    }
+    .tour-gallery-five .item-2 {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+    }
+    .tour-gallery-five .item-3 {
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+    }
+    .tour-gallery-five .item-4 {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+    }
+    .tour-gallery-five .item-5 {
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+    }
+
+    /* Responsive cho màn hình điện thoại */
+    @media (max-width: 768px) {
+        .tour-gallery-five {
+            grid-template-columns: 1fr; /* Chuyển tất cả về 1 cột */
+            grid-template-rows: auto;    /* Chiều cao tự động */
+            height: auto;
+        }
+
+        /* Reset vị trí cho từng item trên mobile */
+        .tour-gallery-five .gallery-item {
+            grid-column: auto;
+            grid-row: auto;
+            height: 250px; /* Đặt chiều cao chung cho các ảnh */
+        }
+
+        .tour-gallery-five .item-1 {
+            height: 350px; /* Ảnh chính to hơn một chút */
+        }
+    }
+</style>
+
 <div class="tour-gallery">
     <div class="container-fluid">
-        <div class="row gap-10 justify-content-center rel">
-            <div class="col-lg-4 col-md-6">
-                <div class="gallery-item">
-                {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
-
-                {{-- Sửa: $tour thành $tourDetail --}}
-                @if ($tourDetail->images->isNotEmpty()) 
-
-                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
-                    {{-- Sửa: $tour thành $tourDetail --}}
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
+        <div class="tour-gallery-five">
+            <div class="gallery-item item-1">
+                @if (isset($tourDetail->images[0]))
+                    <img src="{{ asset('admin/assets/images/gallery-tours/'. $tourDetail->images[0]) }}" alt="{{ $tourDetail->title }}">
                 @else
-                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
-
-                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
-
-                        alt="Ảnh đang cập nhật">
-
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" alt="Ảnh đang cập nhật">
                 @endif
-
-                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
             </div>
-                <div class="gallery-item">
-                    {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
 
-                {{-- Sửa: $tour thành $tourDetail --}}
-                @if ($tourDetail->images->isNotEmpty()) 
-
-                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
-                    {{-- Sửa: $tour thành $tourDetail --}}
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-
-                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
-
+            <div class="gallery-item item-2">
+                 @if (isset($tourDetail->images[1]))
+                    <img src="{{ asset('admin/assets/images/gallery-tours/'. $tourDetail->images[1]) }}" alt="{{ $tourDetail->title }}">
                 @else
-
-                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
-
-                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
-
-                        alt="Ảnh đang cập nhật">
-
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" alt="Ảnh đang cập nhật">
                 @endif
-
-                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
-
             </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="gallery-item gallery-between">
-                     {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
-
-                {{-- Sửa: $tour thành $tourDetail --}}
-                @if ($tourDetail->images->isNotEmpty()) 
-
-                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
-                    {{-- Sửa: $tour thành $tourDetail --}}
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-
-                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
-
+            <div class="gallery-item item-3">
+                 @if (isset($tourDetail->images[2]))
+                    <img src="{{ asset('admin/assets/images/gallery-tours/'. $tourDetail->images[2]) }}" alt="{{ $tourDetail->title }}">
                 @else
-
-                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
-
-                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
-
-                        alt="Ảnh đang cập nhật">
-
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" alt="Ảnh đang cập nhật">
                 @endif
-
-                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
-
             </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="gallery-item">
-                    {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
-
-                {{-- Sửa: $tour thành $tourDetail --}}
-                @if ($tourDetail->images->isNotEmpty()) 
-
-                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
-                    {{-- Sửa: $tour thành $tourDetail --}}
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-
-                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
-
+            <div class="gallery-item item-4">
+                 @if (isset($tourDetail->images[3]))
+                    <img src="{{ asset('admin/assets/images/gallery-tours/'. $tourDetail->images[3]) }}" alt="{{ $tourDetail->title }}">
                 @else
-
-                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
-
-                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
-
-                        alt="Ảnh đang cập nhật">
-
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" alt="Ảnh đang cập nhật">
                 @endif
-
-                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
-
             </div>
-                <div class="gallery-item">
-                     {{-- BẮT ĐẦU PHẦN SỬA LỖI TẠI ĐÂY --}}
-
-                {{-- Sửa: $tour thành $tourDetail --}}
-                @if ($tourDetail->images->isNotEmpty()) 
-
-                    {{-- Nếu có ảnh, hiển thị ảnh đầu tiên --}}
-                    {{-- Sửa: $tour thành $tourDetail --}}
-                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-
-                        alt="{{ $tourDetail->title ?? 'Tour Image' }}">
-
+            <div class="gallery-item item-5">
+                 @if (isset($tourDetail->images[4]))
+                    <img src="{{ asset('admin/assets/images/gallery-tours/'. $tourDetail->images[4]) }}" alt="{{ $tourDetail->title }}">
                 @else
-
-                    {{-- Nếu không có ảnh, hiển thị ảnh mặc định --}}
-
-                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
-
-                        alt="Ảnh đang cập nhật">
-
+                    <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}" alt="Ảnh đang cập nhật">
                 @endif
-
-                {{-- KẾT THÚC PHẦN SỬA LỖI --}}
-
-            </div>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Tour Gallery End -->
 
 

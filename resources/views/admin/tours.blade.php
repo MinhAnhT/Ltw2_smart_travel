@@ -217,4 +217,87 @@
         </div>
     </div>
 </div>
+{{-- ... (nội dung file của bạn) ... --}}
+
 @include('admin.blocks.footer')
+
+{{-- KẾT THÚC PHẦN THÊM MÃ JAVASCRIPT --}}
+<script>
+$(document).ready(function() {
+    
+    // Sử dụng 'body' để đảm bảo sự kiện hoạt động ngay cả khi bảng được vẽ lại bằng AJAX
+    $('body').on('click', '.edit-tour', function() {
+        var tourId = $(this).data('tourid');
+
+        // Tạo URL động một cách an toàn
+        // Route 'admin.tour-edit' cần một tham số, chúng ta tạo một placeholder và thay thế nó.
+        var urlTemplate = "{{ route('admin.tour-edit', ['tourId' => ':id']) }}";
+        var url = urlTemplate.replace(':id', tourId);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json', // Yêu cầu server trả về JSON
+            success: function(response) {
+                // Kiểm tra xem server có trả về success: true không
+                if (response.success && response.tour) {
+                    var tour = response.tour;
+                    
+                    // Điền dữ liệu vào form trong modal
+                    $('#edit-tour-modal .hiddenTourId').val(tour.tourId);
+                    $('#edit-tour-modal [name="name"]').val(tour.title);
+                    $('#edit-tour-modal [name="destination"]').val(tour.destination);
+                    $('#edit-tour-modal [name="domain"]').val(tour.domain);
+                    $('#edit-tour-modal [name="number"]').val(tour.quantity);
+                    $('#edit-tour-modal [name="price_adult"]').val(tour.priceAdult);
+                    $('#edit-tour-modal [name="price_child"]').val(tour.priceChild);
+                    $('#edit-tour-modal [name="description"]').val(tour.description);
+                    
+                    // TODO: Xử lý hiển thị lại lộ trình và hình ảnh nếu cần
+
+                    // Chỉ khi mọi thứ thành công, mới MỞ MODAL
+                    $('#edit-tour-modal').modal('show');
+                } else {
+                    // Thông báo lỗi nếu dữ liệu trả về không hợp lệ
+                    alert(response.message || 'Không nhận được dữ liệu tour hợp lệ.');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Hiển thị lỗi chi tiết hơn để dễ gỡ lỗi
+                console.error("Lỗi AJAX: ", textStatus, errorThrown);
+                alert('Lỗi khi kết nối đến máy chủ. Vui lòng kiểm tra lại route và controller.');
+            }
+        });
+    });
+
+    // Phần code xử lý nút xóa (giữ nguyên hoặc tham khảo mã này cho chắc chắn)
+    $('body').on('click', '.delete-tour', function(e) {
+        e.preventDefault();
+        var tourId = $(this).data('tourid');
+        
+        if (confirm('Bạn có chắc chắn muốn xóa tour này không?')) {
+            $.ajax({
+                url: "{{ route('admin.delete-tour') }}",
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tourId: tourId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                        $('#tbody-listTours').html(response.data); // Cập nhật lại bảng
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Đã xảy ra lỗi trong quá trình xóa.');
+                }
+            });
+        }
+    });
+});
+</script>
+
+{{-- KẾT THÚC PHẦN THÊM MÃ JAVASCRIPT --}}

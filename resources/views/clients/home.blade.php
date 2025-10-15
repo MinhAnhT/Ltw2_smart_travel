@@ -78,7 +78,7 @@
                                         <a href="https://www.youtube.com/watch?v=1..."
                                             class="mfp-iframe video-play-btn"><i class="fas fa-play"></i></a>
                                     </div>
-                                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0]) }}"
+                                    <img src="{{ asset('admin/assets/images/gallery-tours/' . ($tour->images->first() ?? 'default-image.jpg')) }}"
                                         alt="Destination" class="tour-img-fix">
                                 </div>
                                 <div class="content">

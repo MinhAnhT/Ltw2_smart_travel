@@ -2,24 +2,33 @@
     <tr>
         <td>{{ $tour->title }}</td>
         <td>{{ $tour->time }}</td>
-        <td>{!! $tour->description !!}</td>
+        <td>{!! Str::limit($tour->description, 50) !!}</td> {{-- Cắt ngắn mô tả cho gọn --}}
         <td>{{ $tour->quantity }}</td>
         <td>{{ number_format($tour->priceAdult, 0, ',', '.') }}</td>
         <td>{{ number_format($tour->priceChild, 0, ',', '.') }}</td>
         <td>{{ $tour->destination }}</td>
-        <td>{{ $tour->availability }}</td>
+        <td>
+            @if ($tour->availability == 1)
+                <span class="badge badge-success">Hoạt động</span>
+            @else
+                <span class="badge badge-danger">Bản nháp</span>
+            @endif
+        </td>
         <td>{{ date('d-m-Y', strtotime($tour->startDate)) }}</td>
         <td>{{ date('d-m-Y', strtotime($tour->endDate)) }}</td>
-        <td>
-            <button type="button" class="btn-action-listTours edit-tour" data-toggle="modal" data-target="#edit-tour-modal"
-                data-tourId="{{ $tour->tourId }}" data-urledit = "{{ route('admin.tour-edit') }}">
+       <td>
+            {{-- Xóa bỏ data-toggle và data-target --}}
+            <button type="button" class="btn-action-listTours edit-tour"
+                    data-tourid="{{ $tour->tourId }}">
                 <span class="glyphicon glyphicon-edit" style="color: #26B99A; font-size:24px" aria-hidden="true"></span>
             </button>
         </td>
         <td>
-            <a href="{{ route('admin.delete-tour') }}" data-tourId="{{ $tour->tourId }}" class="delete-tour">
-                <span class="glyphicon glyphicon-trash" style="color: red; font-size:24px" aria-hidden="true"></span>
-            </a>
+             {{-- Nút Xóa: Chỉ cần data-tourid, JS sẽ xử lý --}}
+            <button type="button" class="btn btn-sm btn-danger delete-tour" 
+                data-tourid="{{ $tour->tourId }}">
+                Xóa
+            </button>
         </td>
     </tr>
 @endforeach
