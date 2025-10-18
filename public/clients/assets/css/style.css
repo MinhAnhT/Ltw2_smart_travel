@@ -8265,3 +8265,84 @@ blockquote {
 .page-wrapper {
     padding-top: 110px; /* Để nội dung không bị header che mất, chỉnh lại nếu header cao hơn/thấp hơn */
 }
+#destination-input::placeholder {
+    color: #bdbdbd;
+    opacity: 1;
+    font-size: 20px;
+    transition: opacity 0.4s;
+}
+/* ===== CSS TÙY CHỈNH TỪ BANNER_HOME ===== */
+.search-filter-inner .filter-item,
+.search-filter-inner .search-button .theme-btn {
+    height: 30px;
+    padding: 0 10px;
+}
+.search-filter-inner .filter-item input::placeholder {
+    text-align: center;
+    opacity: 0.9;
+}
+.search-filter-inner .filter-item select,
+.search-filter-inner .filter-item input {
+    text-align: center;
+    text-align-last: center;
+}
+.filter-item {
+    background: rgba(255,255,255,0.92);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-width: 180px;
+}
+.filter-item input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    color: #555;
+    width: 100%;
+}
+.filter-item .icon {
+    color: #888;
+    font-size: 18px;
+    position: absolute;
+    left: 14px;
+}
+.search-button .theme-btn {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0 20px;
+    height: 45px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.search-filter-inner {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.toast-message {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: #e53935;
+    color: #fff;
+    padding: 16px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    opacity: 0.95;
+    animation: fadeInOut 3s forwards;
+}
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px);}
+    10% { opacity: 0.95; transform: translateY(0);}
+    90% { opacity: 0.95; }
+    100% { opacity: 0; transform: translateY(-20px);}
+}
+/* ===== HẾT CSS TÙY CHỈNH ===== */

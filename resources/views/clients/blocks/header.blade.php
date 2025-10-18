@@ -113,7 +113,7 @@
                                         <li class="{{ Request::url() == route('destination') ? 'active' : '' }}"><a
                                                 href="{{ route('destination') }}">Điểm đến</a></li>
                                         <li class="{{ Request::url() == route('contact') ? 'active' : '' }}"><a
-                                                href="{{ route('contact') }}">Liên Hệ</a></li>
+                                        href="{{ route('contact') }}">Liên Hệ</a></li>
                                     </ul>
                                 </div>
 

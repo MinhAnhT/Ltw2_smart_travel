@@ -7,6 +7,7 @@ use App\Models\clients\Tours;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Tour;
 
 class SearchController extends Controller
 {
@@ -20,37 +21,17 @@ class SearchController extends Controller
     {
         $title = 'Tìm kiếm';
 
-        $destinationMap = [
-            'dn' => 'Đà Nẵng',
-            'cd' => 'Côn Đảo',
-            'hn' => 'Hà Nội',
-            'hcm' => 'TP. Hồ Chí Minh',
-            'hl' => 'Hạ Long',
-            'nb' => 'Ninh Bình',
-            'pq' => 'Phú Quốc',
-            'dl' => 'Đà Lạt',
-            'qt' => 'Quảng Trị',
-            'kh' => 'Khánh Hòa',
-            'ct' => 'Cần Thơ',
-            'vt' => 'Vũng Tàu',
-            'qn' => 'Quảng Ninh',
-            'la' => 'Lào Cai',
-            'bd' => 'Bình Định',
-        ];
-
         $destination = $request->input('destination');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
         // Chuyển đổi định dạng ngày tháng
-        $formattedStartDate = $startDate ? Carbon::createFromFormat('d/m/Y', $startDate)->format('Y-m-d') : null;
-        $formattedEndDate = $endDate ? Carbon::createFromFormat('d/m/Y', $endDate)->format('Y-m-d') : null;
+        $formattedStartDate = $startDate ? Carbon::createFromFormat('Y-m-d', $startDate)->format('Y-m-d') : null;
+        $formattedEndDate = $endDate ? Carbon::createFromFormat('Y-m-d', $endDate)->format('Y-m-d') : null;
 
-        // Chuyển đổi giá trị sang tên chi tiết nếu có trong mảng
-        $destinationName = $destinationMap[$destination];
 
         $dataSearch = [
-            'destination' => $destinationName,
+            'destination' => $destination,
             'startDate' => $formattedStartDate,
             'endDate' => $formattedEndDate,
         ];
