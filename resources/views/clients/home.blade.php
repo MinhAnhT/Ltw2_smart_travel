@@ -138,3 +138,6 @@
 </section>
 @include('clients.blocks.new_letter')
 @include('clients.blocks.footer_home')
+@if(isset($tours) && count($tours) == 0)
+    <script>showToast("Không có tour nào được tìm thấy!");</script>
+@endif
