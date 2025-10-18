@@ -3,7 +3,6 @@
     <div class="main_container">
         @include('admin.blocks.sidebar')
 
-        <!-- page content -->
         <div class="right_col" role="main">
             <div class="">
                 <div class="page-title">
@@ -30,8 +29,11 @@
                         @foreach ($users as $user)
                             <div class="col-md-4 col-sm-4  profile_details">
                                 <div class="well profile_view">
+                                    
+                                    {{-- PHẦN BỊ MẤT ĐÃ ĐƯỢC KHÔI PHỤC --}}
                                     <div class="col-sm-12">
-                                        <h4 class="brief"><i>{{ $user->isActive }}</i></h4>
+                                        {{-- Hiển thị trạng thái đã sửa từ controller --}}
+                                        <h4 class="brief"><i>{{ $user->statusText }}</i></h4>
                                         <div class="left col-md-7 col-sm-7">
                                             <h2>{{ $user->fullname }}</h2>
                                             <p><strong>About: </strong> {{ $user->username }} </p>
@@ -45,42 +47,42 @@
                                                 alt="" class="img-circle img-fluid">
                                         </div>
                                     </div>
+                                    {{-- KẾT THÚC PHẦN BỊ MẤT --}}
+
                                     <div class=" profile-bottom text-center">
+                                        {{-- PHẦN NÚT BẤM ĐÃ SỬA DÙNG CLASS --}}
                                         <div class=" col-sm-12 emphasis" style="display: flex; justify-content: end">
-                                            @if ($user->isActive == 'Chưa kích hoạt')
-                                                <button type="button" class="btn btn-primary btn-sm"
-                                                    data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.active-user') }}"}'
-                                                    id="btn-active">
-                                                    <i class="fa fa-check"> </i> Kích hoạt
-                                                </button>
-                                            @endif
-                                            <button type="button" class="btn btn-primary btn-warning"
+    
+                                            <button type="button" class="btn btn-primary btn-sm btn-active"
+                                                data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.active-user') }}"}'
+                                                style="{{ $user->isActive !== 'n' ? 'display: none;' : '' }}">
+                                                <i class="fa fa-check"> </i> Kích hoạt
+                                            </button>
+                                
+                                            <button type="button" class="btn btn-primary btn-warning btn-ban"
                                                 data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.status-user') }}", "status": "b"}'
-                                                id="btn-ban"
-                                                style="{{ $user->isActive === 'b' ? 'display: none;' : '' }}">
+                                                style="{{ $user->isActive === 'b' || $user->isActive === 'd' ? 'display: none;' : '' }}">
                                                 <i class="fa fa-ban"> </i> Chặn
                                             </button>
-
-                                            <button type="button" class="btn btn-primary btn-warning"
-                                                data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.status-user') }}", "status": ""}'
-                                                id="btn-unban"
+                                
+                                            <button type="button" class="btn btn-primary btn-warning btn-unban"
+                                                data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.status-user') }}", "status": "n"}'
                                                 style="{{ $user->isActive !== 'b' ? 'display: none;' : '' }}">
                                                 <i class="fa fa-ban"> </i> Bỏ chặn
                                             </button>
-
-                                            <button type="button" class="btn btn-primary btn-danger"
+                                
+                                            <button type="button" class="btn btn-primary btn-danger btn-delete"
                                                 data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.status-user') }}", "status": "d"}'
-                                                id="btn-delete"
                                                 style="{{ $user->isActive === 'd' ? 'display: none;' : '' }}">
                                                 <i class="fa fa-close"> </i> Xóa
                                             </button>
-                                            <button type="button" class="btn btn-primary btn-danger"
-                                                data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.status-user') }}", "status": ""}'
-                                                id="btn-restore"
+                                
+                                            <button type="button" class="btn btn-primary btn-danger btn-restore"
+                                                data-attr='{"userId": "{{ $user->userId }}", "action": "{{ route('admin.status-user') }}", "status": "n"}'
                                                 style="{{ $user->isActive !== 'd' ? 'display: none;' : '' }}">
                                                 <i class="fa fa-close"> </i> Khôi phục
                                             </button>
-
+                                
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +93,6 @@
                 </div>
             </div>
         </div>
-        <!-- /page content -->
-    </div>
+        </div>
 </div>
 @include('admin.blocks.footer')

@@ -28,10 +28,23 @@ class UserManagementController extends Controller
             if (!$user->avatar) {
                 $user->avatar = 'unnamed.png';
             }
-            if ($user->isActive == 'y')
-                $user->isActive = 'Đã kích hoạt';
-            else
-                $user->isActive = 'Chưa kích hoạt';
+
+            // SỬA LỖI 1: TẠO BIẾN MỚI 'statusText' VÀ KHÔNG GHI ĐÈ 'isActive'
+            // 'isActive' gốc (y, n, b, d) phải được giữ nguyên để view xử lý logic
+            switch ($user->isActive) {
+                case 'y':
+                    $user->statusText = 'Đã kích hoạt';
+                    break;
+                case 'b':
+                    $user->statusText = 'Đã chặn';
+                    break;
+                case 'd':
+                    $user->statusText = 'Đã xóa';
+                    break;
+                case 'n':
+                default:
+                    $user->statusText = 'Chưa kích hoạt';
+            }
         }
         // dd($users);
 
@@ -62,9 +75,9 @@ class UserManagementController extends Controller
         $userId = $request->userId;
         $status = $request->status;
 
+        // SỬA LỖI 2: Cập nhật cột 'isActive', không phải cột 'status'
         $dataUpdate = [
-            'userId' => $userId,
-            'status' => $status
+            'isActive' => $status
         ];
 
         $changeStatus = $this->users->changeStatus($userId, $dataUpdate);
@@ -85,14 +98,18 @@ class UserManagementController extends Controller
 
     private function getStatusText($status)
     {
+        // Bổ sung thêm các trạng thái
         switch ($status) {
             case 'b':
                 return 'Đã chặn';
             case 'd':
                 return 'Đã xóa';
+            case 'n':
+                return 'Chưa kích hoạt'; // Trạng thái khôi phục
+            case 'y':
+                return 'Đã kích hoạt';
             default:
-                return 'Không xác định';
+                return 'Chưa kích hoạt';
         }
     }
-
 }

@@ -2,7 +2,7 @@ $(document).ready(function () {
     /********************************************
      * USER MANAGEMENT                          *
      ********************************************/
-    $("#btn-active").click(function () {
+    $(document).on('click', '.btn-active', function () {
         var button = $(this);
         let dataAttr = button.data("attr");
 
@@ -35,8 +35,7 @@ $(document).ready(function () {
             },
         });
     });
-
-    $("#btn-ban, #btn-delete, #btn-unban, #btn-restore").click(function () {
+   $(document).on('click', '.btn-ban, .btn-delete, .btn-unban, .btn-restore', function () {
         var button = $(this);
         let dataAttr = button.data("attr");
 
@@ -61,15 +60,19 @@ $(document).ready(function () {
                         .closest(".profile_view")
                         .find(".brief i")
                         .text(response.status);
+                    
+                    // SỬA LỖI 3: Dùng class selector khi tìm nút để ẩn/hiện
                     button.parent().find("button").hide(); // Ẩn tất cả các nút
                     if (status === "b") {
-                        button.parent().find("#btn-unban").show();
+                        button.parent().find(".btn-unban").show();
                     } else if (status === "d") {
-                        button.parent().find("#btn-restore").show();
+                        button.parent().find(".btn-restore").show();
                     } else {
+                        // Khi khôi phục (status == 'n'), 
+                        // hiện các nút Kích hoạt, Chặn, Xóa
                         button
                             .parent()
-                            .find("#btn-ban, #btn-delete, #btn-active")
+                            .find(".btn-ban, .btn-delete, .btn-active")
                             .show();
                     }
                     toastr.success(response.message);
