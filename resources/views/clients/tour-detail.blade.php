@@ -230,7 +230,7 @@
                             <div id="collapseTwo{{ $timeline->timelineId }}" class="accordion-collapse collapse"
                                 data-bs-parent="#faq-accordion-two">
                                 <div class="accordion-body">
-                                    <p>{!! $timeline->description !!}</p>
+                                    <p>{!! $timeline->content !!}</p>
                                 </div>
                             </div>
                         </div>
