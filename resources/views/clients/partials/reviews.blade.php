@@ -26,7 +26,8 @@
                 <img src="{{ asset('admin/assets/images/user-profile/' . $review->avatar) }}" alt="">
             </div>
             <div class="content">
-                <h6>{{ $review->fullName }}</h6>
+                {{-- SỬA 1: Ưu tiên fullname, nếu không có thì dùng username --}}
+                <h6>{{ $review->fullname ?? $review->username }}</h6>
                 <div class="ratting">
                     @for ($i = 0; $i < 5; $i++)
                         @if ($review->rating && $i < $review->rating)
@@ -38,7 +39,8 @@
 
                 </div>
                 <span class="time">{{ $tourDetail->time }}</span>
-                <p>{{ $review->comment }}</p>
+                {{-- SỬA 2: Đổi 'comment' thành 'reviewContent' --}}
+                <p>{{ $review->reviewContent }}</p>
             </div>
         </div>
     @endforeach

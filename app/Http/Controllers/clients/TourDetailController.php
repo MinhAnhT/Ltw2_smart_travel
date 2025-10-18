@@ -75,7 +75,7 @@ class TourDetailController extends Controller
         $dataReview = [
             'tourId' => $tourId,
             'userId' => $userId,
-            'comment' => $message,
+            'reviewContent' => $message,
             'rating' => $star
         ];
 
