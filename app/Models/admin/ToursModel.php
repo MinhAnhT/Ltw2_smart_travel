@@ -88,6 +88,10 @@ class ToursModel extends Model
         return true;
 
     }
+    public function deleteImage($imageId)
+    {
+        return DB::table('tbl_images')->where('imageId', $imageId)->delete();
+    }
     // CÁC PHƯƠNG THỨC BỊ THIẾU MÀ CONTROLLER CẦN
     public function getTour($tourId){
         return DB::table($this->table)->where('tourId', $tourId)->first();
@@ -137,18 +141,23 @@ class ToursModel extends Model
         }
     }
 
-    public function addTimeLine($data)
+   public function addTimeLine($data)
     {
         // Đảm bảo rằng dayNumber, title, và content được thiết lập
         $timelineData = [
             'tourId' => $data['tourId'] ?? null,
             'dayNumber' => (int)($data['dayNumber'] ?? 1),
             'title' => $data['title'] ?? '',
-            'description' => $data['description'] ?? null,  // field này có thể null
-            'content' => $data['content'] ?? ''
+            // 'description' => $data['description'] ?? null,  // Field này không dùng trong JS
+            'content' => $data['content'] ?? '' // 'content' là tên cột trong DB
         ];
+
+        // Xóa các key null để tránh lỗi DB
+        $timelineData = array_filter($timelineData, function($value) {
+            return $value !== null;
+        });
 
         return DB::table('tbl_timeline')->insert($timelineData);
     }
-
 }
+

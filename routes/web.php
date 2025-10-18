@@ -136,7 +136,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/tour-edit/{tourId}', [ToursManagementController::class, 'getTourEdit'])->name('admin.tour-edit');
     Route::post('/edit-tour', [ToursManagementController::class, 'updateTour'])->name('admin.edit-tour');
     Route::post('/add-temp-images', [ToursManagementController::class, 'uploadTempImagesTours'])->name('admin.add-temp-images');
-
+    Route::post('/admin/update-tour', [ToursManagementController::class, 'updateTour'])->name('admin.update-tour');
     //Management Booking
     Route::get('/booking', [BookingManagementController::class, 'index'])->name('admin.booking');
     Route::post('/confirm-booking', [BookingManagementController::class, 'confirmBooking'])->name('admin.confirm-booking');

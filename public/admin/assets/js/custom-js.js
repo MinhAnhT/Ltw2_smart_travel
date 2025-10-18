@@ -88,16 +88,64 @@ $(document).ready(function () {
     if ($("#description").length) {
         CKEDITOR.replace("description");
     }
+
+    function calculateAndUpdateTime() {
+        var startDateVal = $("#edit-tour-modal #start_date").val();
+        var endDateVal = $("#edit-tour-modal #end_date").val();
+        var $timeInput = $("#edit-tour-modal input[name='time']");
+
+        if (startDateVal && endDateVal) {
+            try {
+                // Chúng ta dùng moment.js vì bạn đã dùng nó ở chỗ khác
+                var start = moment(startDateVal, "DD/MM/YYYY");
+                var end = moment(endDateVal, "DD/MM/YYYY");
+
+                if (!start.isValid() || !end.isValid()) {
+                    $timeInput.val("");
+                    return;
+                }
+                
+                // Logic tính: số đêm = chênh lệch ngày
+                var nights = end.diff(start, 'days');
+
+                if (nights < 0) {
+                    $timeInput.val("Ngày về không hợp lệ");
+                    return;
+                }
+                
+                // Số ngày = số đêm + 1
+                var days = nights + 1;
+                $timeInput.val(`${days} ngày ${nights} đêm`);
+
+            } catch (e) {
+                $timeInput.val("Lỗi tính ngày");
+            }
+        }
+    }
     $("#start_date, #end_date").datetimepicker({
         format: "d/m/Y",
         timepicker: false,
+       
+        // Thêm các sự kiện này để cập nhật time khi đổi ngày
+        onChangeDateTime: function(dp, $input) {
+            // Chỉ chạy khi $input nằm trong modal
+            if ($input.closest('#edit-tour-modal').length) {
+                calculateAndUpdateTime();
+            }
+        },
+        onClose: function(dp, $input) {
+            if ($input.closest('#edit-tour-modal').length) {
+                calculateAndUpdateTime();
+            }
+        }
+       
     });
-
     var timelineCounter_edit;
     var formDataEdit = {};
     var tourIdSendingImage;
     $(document).on("click", ".edit-tour", function (e) {
         e.preventDefault();
+        $('#edit-tour-modal').modal('show');
         console.log("edittour-click");
         var tourId = $(this).data("tourid");
         var urlEdit = $(this).data("urledit");
@@ -135,6 +183,7 @@ $(document).ready(function () {
 
                     // Điền dữ liệu vào các field
                     $("input[name='name']").val(tour.title);
+                    $("input[name='time']").val(tour.time);
                     $("input[name='destination']").val(tour.destination);
                     $("select[name='domain']").val(tour.domain); // Giá trị select
                     $("input[name='number']").val(tour.quantity);
@@ -217,147 +266,81 @@ $(document).ready(function () {
     }
 
     function init_SmartWizard_Edit_Tour() {
-        if (typeof $.fn.smartWizard === "undefined") {
-            return;
-        }
-        console.log("init_SmartWizard_Edit_Tour");
-        // $("#edit-tour-modal #wizard").smartWizard("goToStep", 1);
+    if (typeof $.fn.smartWizard === "undefined") {
+        return;
+    }
+    console.log("init_SmartWizard_Edit_Tour");
 
-        $("#edit-tour-modal #wizard").smartWizard({
-            onLeaveStep: function (obj, context) {
-                var stepIndex = context.fromStep; // Lấy chỉ số bước hiện tại khi rời khỏi bước
-                var nextStepIndex = context.toStep; // Lấy chỉ số bước tiếp theo
-                console.log("Leaving Step: " + stepIndex);
-                console.log("Next Step: " + nextStepIndex);
+    $("#edit-tour-modal #wizard").smartWizard({
+        onLeaveStep: function (obj, context) {
+            
+            // Validate và LƯU DỮ LIỆU khi rời khỏi Bước 1
+            if (context.fromStep == 1) {
+                const form = $("#edit-tour-modal #form-step1")[0]; 
 
-                var finishStep1 = true;
-                var finishStep2 = true;
-                // Kiểm tra bước 1
-                if (stepIndex === 1) {
-                    // Kiểm tra các trường trong form step1
-                    $(
-                        "#form-step1 input, #form-step1 select, #form-step1 textarea"
-                    ).each(function () {
-                        if (
-                            $(this).prop("required") &&
-                            $(this).val().trim() === ""
-                        ) {
-                            finishStep1 = false; // Đặt finishStep1 thành false nếu có trường hợp không hợp lệ
-                            $(this).addClass("is-invalid"); // Thêm lớp lỗi
-                            toastr.error(
-                                "Vui lòng điền đầy đủ các trường bắt buộc!",
-                                "Lỗi!"
-                            );
-                        } else {
-                            $(this).removeClass("is-invalid"); // Xóa lớp lỗi nếu trường hợp hợp lệ
-                        }
+                if (form.checkValidity()) {
+                    // Form hợp lệ, lưu dữ liệu vào biến toàn cục formDataEdit
+                    var form1Data = $("#edit-tour-modal #form-step1").serializeArray();
+                    
+                    $.each(form1Data, function(i, field){
+                        formDataEdit[field.name] = field.value;
                     });
 
-                    // Kiểm tra trường domain
-                    var domain = $("#domain").val();
-                    if (!domain) {
-                        finishStep1 = false;
-                        $("#domain").addClass("is-invalid"); // Thêm lớp lỗi nếu không chọn khu vực
-                        toastr.error("Vui lòng chọn khu vực!", "Lỗi!");
-                    } else {
-                        $("#domain").removeClass("is-invalid");
-                    }
+                    // Lấy mô tả từ CKEditor
+                    formDataEdit.description = CKEDITOR.instances["description"].getData();
+                    // Thêm tourId
+                    formDataEdit.tourId = tourIdSendingImage;
 
-                    // Kiểm tra mô tả
-                    var description =
-                        CKEDITOR.instances["description"].getData();
-                    if (!description) {
-                        finishStep1 = false;
-                        toastr.error("Vui lòng điền mô tả!");
-                    }
-
-                    console.log(finishStep1); // Kiểm tra giá trị của finishStep1
-
-                    // Tạo formData từ các trường trong form bước 1
-                    formDataEdit = {
-                        tourId: tourIdSendingImage,
-                        name: $("input[name='name']").val(),
-                        destination: $("input[name='destination']").val(),
-                        domain: $("#domain").val(),
-                        number: $("input[name='number']").val(),
-                        price_adult: $("input[name='price_adult']").val(),
-                        price_child: $("input[name='price_child']").val(),
-                        start_date: $("#start_date").val(),
-                        end_date: $("#end_date").val(),
-                        description: description,
-                        _token: $('input[name="_token"]').val(),
-                        images: [],
-                        timeline: [],
-                    };
-                    console.log("formDataEdit step 1:");
-                    console.log(formDataEdit);
-
-                    // Nếu tất cả hợp lệ, cho phép chuyển bước
-                    if (finishStep1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return true; // Cho phép đi tiếp
+                } else {
+                    toastr.error("Vui lòng điền đầy đủ thông tin ở Bước 1!");
+                    form.reportValidity(); 
+                    return false; // Ngăn không cho đi tiếp
                 }
-                // Kiểm tra bước 2 (ảnh)
-                if (stepIndex === 2) {
-                    var formDataImages = getFormDataImages();
+            }
+            return true;
+        }
+    });
 
-                    if (formDataImages === false) {
-                        return false; // Dừng lại nếu ảnh không đủ
-                    }
-
-                    // Thêm ảnh vào formDataEdit
-                    formDataEdit.images = formDataImages; // Gán danh sách ảnh cho formDataEdit
-                    console.log("formDataEdit step 2:");
-                    console.log(formDataEdit);
-                    if (finishStep2) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            },
-        });
-
-        // Khởi tạo Dropzone
-        Dropzone.autoDiscover = false; // Ngăn Dropzone tự động init
-        dropzoneOldImages = new Dropzone("#myDropzone-listTour", {
-            url: "http://travela:8000/admin/add-temp-images", // URL upload ảnh
-            method: "post",
-            paramName: "image",
-            acceptedFiles: "image/*",
-            addRemoveLinks: true,
-            dictRemoveFile: "Xóa ảnh",
-            autoProcessQueue: true, // Không tự động upload
-            maxFiles: 5, // Giới hạn số file tối đa
-            parallelUploads: 5, // Số file được upload song song
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"), // Thêm CSRF token vào headers
-            },
-            init: function () {
-                // Lắng nghe sự kiện 'sending' để thêm thông tin vào formData
-                this.on("sending", function (file, xhr, formData) {
-                    formData.append("tourId", tourIdSendingImage); // tourId là ID của tour mà bạn cần gửi
-                });
-            },
-        });
-
-        $("#wizard_verticle").smartWizard({
-            transitionEffect: "slide",
-        });
-
-        $(".buttonNext").addClass("btn btn-success");
-        $(".buttonPrevious").addClass("btn btn-primary");
-        $(".buttonFinish").addClass("btn btn-default");
+    // QUAN TRỌNG: Kiểm tra element có tồn tại không
+    if ($("#myDropzone-listTour").length === 0) {
+        console.error("Dropzone element không tồn tại!");
+        return;
     }
 
+    // Hủy Dropzone cũ nếu có
+    if (Dropzone.instances.length > 0) {
+        Dropzone.instances.forEach(dz => dz.destroy());
+    }
+
+    // Khởi tạo Dropzone MỚI
+    Dropzone.autoDiscover = false;
+    dropzoneOldImages = new Dropzone("#myDropzone-listTour", {
+        url: $("#myDropzone-listTour").data("upload-url"),
+        method: "post",
+        paramName: "image",
+        acceptedFiles: "image/*",
+        addRemoveLinks: true,
+        dictRemoveFile: "Xóa ảnh",
+        autoProcessQueue: true,
+        maxFiles: 5,
+        parallelUploads: 5,
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        init: function () {
+            this.on("sending", function (file, xhr, formData) {
+                formData.append("tourId", tourIdSendingImage);
+            });
+        }
+    });
+}
     function loadOldImages(images) {
         images.forEach(function (image) {
-            let imageUrl = `/admin/assets/images/gallery-tours/${image.imageURL}`; // Tạo đường dẫn đầy đủ
+            let imageUrl = `/admin/assets/images/gallery-tours/${image.imageUrl}`; // Tạo đường dẫn đầy đủ
 
             let mockFile = {
-                name: image.imageURL, // Tên tệp ảnh
+                name: image.imageUrl, // Tên tệp ảnh
                 url: imageUrl, // Đường dẫn đầy đủ
                 status: "accepted", // Đặt trạng thái của file là 'accepted'
             };
@@ -372,7 +355,7 @@ $(document).ready(function () {
 
     function editTimelineEntry(data = null) {
         const title = data ? data.title : `Ngày ${timelineCounter_edit}`;
-        const description = data ? data.description : "";
+        const description = data ? data.content : "";
 
         const timelineEntry = `
         <div class="timeline-entry" id="timeline-entry-${timelineCounter_edit}">
@@ -400,44 +383,60 @@ $(document).ready(function () {
         timelineCounter_edit++;
     }
 
-    $("#edit-tour-modal").on("shown.bs.modal", function () {
+  $("#edit-tour-modal").on("shown.bs.modal", function () {
         $("#edit-tour-modal #wizard .buttonFinish")
             .off("click")
             .on("click", function (e) {
-                // Thêm các timeline entries vào formDataEdit
+                e.preventDefault(); // Ngăn hành vi submit mặc định nếu có
+
+                // BƯỚC 1: LẤY DỮ LIỆU TIMELINE (STEP 3)
+                // (formDataEdit đã chứa dữ liệu Step 1 từ onLeaveStep)
                 formDataEdit.timeline = []; // Xóa dữ liệu cũ nếu có
                 $(".timeline-entry").each(function () {
-                    const title = $(this).find('input[name^="day"]').val(); // Lấy title ngày
+                    const title = $(this).find('input[name^="day"]').val(); 
                     const itinerary =
                         CKEDITOR.instances[
                             $(this).find("textarea").attr("id")
-                        ].getData(); // Lấy lộ trình từ CKEditor
+                        ].getData(); 
                     formDataEdit.timeline.push({
                         title: title,
                         itinerary: itinerary,
                     });
                 });
 
+                // BƯỚC 2: LẤY DỮ LIỆU ẢNH (STEP 2)
+                var imagesData = getFormDataImages(); // Dùng hàm bạn đã có
+                if (imagesData === false) {
+                    // getFormDataImages() đã tự báo lỗi toastr
+                    return; // Dừng lại nếu không đủ ảnh
+                }
+                formDataEdit.images = imagesData; // Thêm ảnh vào object
+
                 console.log(
-                    "formDataEdit sau khi nhấn hoàn thành:",
+                    "formDataEdit GỬI ĐI:",
                     formDataEdit
                 );
-                var urlUpdate = $("#timeline-form").attr("action");
+                
+                var urlUpdate = $("#edit-tour-modal").data("update-url");
 
                 $.ajax({
-                    url: urlUpdate, // Thay đổi URL phù hợp với API của bạn
+                    url: urlUpdate, // Phải là /admin/edit-tour
                     type: "POST",
-                    data: formDataEdit,
+                    data: formDataEdit, // Gửi object ĐẦY ĐỦ
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function (response) {
                         if (response.success) {
                             toastr.success(response.message);
                             $("#edit-tour-modal").modal("hide");
-                            // Reload lại toàn bộ trang
-                            location.reload();
+                            location.reload(); // Tải lại trang
+                        } else {
+                            toastr.error(response.message || "Có lỗi xảy ra.");
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+                        toastr.error("Lỗi AJAX: " + xhr.status + " " + errorThrown);
                     },
                 });
             });

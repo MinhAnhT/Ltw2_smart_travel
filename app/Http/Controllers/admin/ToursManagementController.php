@@ -56,7 +56,8 @@ class ToursManagementController extends Controller
 
         // Tính số đêm: số ngày - 1
         $nights = $days - 1;
-
+        $nights = Carbon::parse($startDate)->diffInDays(Carbon::parse($endDate));
+        $days = $nights + 1;
         // Định dạng thời gian theo kiểu "X ngày Y đêm"
         $time = "{$days} ngày {$nights} đêm";
 
@@ -225,76 +226,98 @@ class ToursManagementController extends Controller
             'message' => 'Tour đã được thêm thành công'
         ]);
     }
-    public function updateTour(Request $request)
+public function updateTour(Request $request)
     {
-        $tourId = $request->tourId;
-        $name = $request->input('name');
-        $destination = $request->input('destination');
-        $domain = $request->input('domain');
-        $quantity = $request->input('number');
-        $price_adult = $request->input('price_adult');
-        $price_child = $request->input('price_child');
-        $description = $request->input('description');
+        // Bắt đầu Transaction
+        DB::beginTransaction();
 
-        $dataTours = [
-            'title'       => $name,
-            'description' => $description,
-            'quantity'    => $quantity,
-            'priceAdult'  => $price_adult,
-            'priceChild'  => $price_child,
-            'destination' => $destination,
-            'domain'      => $domain,
-        ];
+        try {
+            $tourId = $request->input('tourId');
+            if (!$tourId) {
+                return response()->json(['success' => false, 'message' => 'Thiếu Tour ID.'], 400);
+            }
 
-        // LOGIC TRONG HÀM UPDATE CŨNG CÓ LỖI TƯƠNG TỰ VỀ ẢNH, TÔI ĐÃ SỬA VÀ CẢI THIỆN LẠI:
-        
-        $updateTour = $this->tours->updateTour($tourId, $dataTours);
-
-        // 1. XÓA ẢNH CŨ VÀ LỘ TRÌNH CŨ
-        $this->tours->deleteData($tourId, 'tbl_timeline');
-        // $this->tours->deleteData($tourId, 'tbl_images'); // KHÔNG DÙNG HÀM NÀY NỮA, DÙNG DELETE ẢNH CỤ THỂ HOẶC LÀM RÕ HƠN
-
-        // 2. LẤY ẢNH MỚI TỪ BẢNG TẠM VÀ CHUYỂN SANG BẢNG CHÍNH (GIẢ ĐỊNH LOGIC SỬA DÙNG CHUNG CÁCH UPLOAD)
-        $sessionId = $request->session()->getId();
-        $tempImages = DB::table('tbl_temp_images')->where('sessionId', $sessionId)->get();
-
-        if ($tempImages->count() > 0) { // Nếu có ảnh mới upload
-            // XÓA TẤT CẢ ẢNH CŨ TRƯỚC KHI THÊM ẢNH MỚI
-            $this->tours->deleteData($tourId, 'tbl_images'); 
+            // 1. Cập nhật thông tin Tour chính
+            // Chuyển ngày về định dạng Y-m-d
+            $startDate = Carbon::createFromFormat('d/m/Y', $request->input('start_date'))->format('Y-m-d');
+            $endDate = Carbon::createFromFormat('d/m/Y', $request->input('end_date'))->format('Y-m-d');
             
-            foreach ($tempImages as $tempImage) {
-                $dataUpload = [
-                    'tourId' => $tourId,
-                    'imageUrl' => $tempImage->imageTempURL, 
-                    'description' => $name  
-                ];
-                $this->tours->uploadImages($dataUpload); // Lưu vào bảng chính
+            // Tính toán lại thời gian (time)
+            $nights = Carbon::parse($startDate)->diffInDays(Carbon::parse($endDate));
+            $days = $nights + 1;
+            $time = "{$days} ngày {$nights} đêm";
+
+            $tourData = [
+                'title' => $request->input('name'), // JS gửi 'name'
+                'destination' => $request->input('destination'),
+                'domain' => $request->input('domain'),
+                'quantity' => $request->input('number'), // JS gửi 'number'
+                'priceAdult' => $request->input('price_adult'),
+                'priceChild' => $request->input('price_child'),
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'description' => $request->input('description'),
+                'time' => $time,
+                'updated_at' => Carbon::now()
+            ];
+
+            $this->tours->updateTour($tourId, $tourData);
+
+            // 2. Cập nhật Timeline
+            $timelines = $request->input('timeline', []);
+            
+            // Xóa timeline cũ
+            $this->tours->deleteData($tourId, 'tbl_timeline');
+
+            // Thêm timeline mới
+            if (!empty($timelines)) {
+                $dayCounter = 1;
+                foreach ($timelines as $item) {
+                    $timelineData = [
+                        'tourId' => $tourId,
+                        'dayNumber' => $dayCounter++,
+                        'title' => $item['title'],
+                        'content' => $item['itinerary'] // JS gửi 'itinerary'
+                    ];
+                    $this->tours->addTimeLine($timelineData); // Dùng hàm addTimeLine đã có
+                }
             }
-            // XÓA BẢN GHI TẠM
-            DB::table('tbl_temp_images')->where('sessionId', $sessionId)->delete();
-        }
-        
-        // 3. LƯU LỘ TRÌNH MỚI
-        $timelines = $request->input('timeline');
+            
+            // 3. Cập nhật Images
+            $newImageNames = $request->input('images', []); // Danh sách ảnh JS gửi
+            $oldImages = $this->tours->getImages($tourId); // Lấy ảnh hiện tại từ DB
 
-        if ($timelines && is_array($timelines)) {
-            foreach ($timelines as $index => $timeline) { // <--- Đã thêm $index
-                $data = [
-                    'tourId' => $tourId,
-                    'dayNumber' => $index + 1, // <--- Đã thêm dayNumber
-                    'title' => $timeline['title'],
-                    'content' => $timeline['itinerary']
-                ];
-
-                $this->tours->addTimeLine($data);  // Gọi phương thức addTimeLine()
+            // Xóa ảnh không còn trong danh sách mới
+            foreach ($oldImages as $oldImage) {
+                if (!in_array($oldImage->imageUrl, $newImageNames)) {
+                    // Xóa file vật lý
+                    $imagePath = public_path('admin/assets/images/gallery-tours/' . $oldImage->imageUrl);
+                    if (File::exists($imagePath)) {
+                        File::delete($imagePath);
+                    }
+                    // Xóa trong DB (ToursModel cần có hàm này)
+                    $this->tours->deleteImage($oldImage->imageId); // Giả sử có hàm deleteImage(imageId)
+                }
             }
+            // (Lưu ý: Logic thêm ảnh mới đã được xử lý bằng Dropzone khi upload)
+
+            // Commit transaction
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật tour thành công!',
+            ]);
+
+        } catch (\Exception $e) {
+            // Nếu có lỗi, rollback
+            DB::rollBack();
+            Log::error('Lỗi updateTour: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Sửa thành công!',
-        ]);
-
     }
    public function getTourEdit($tourId)
     {
