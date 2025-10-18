@@ -32,7 +32,7 @@ class BookingController extends Controller
         return view('clients.booking', compact('title', 'tour', 'transIdMomo'));
     }
 
-    public function createBooking(Request $req)
+   public function createBooking(Request $req)
     {
         // dd($req);
         $address = $req->input('address');
@@ -45,28 +45,34 @@ class BookingController extends Controller
         $totalPrice = $req->input('totalPrice');
         $tourId = $req->input('tourId');
         $userId = $this->getUserId();
+        
         /**
          * Xử lý booking và checkout
          */
+
+        // Dữ liệu cho tbl_booking (chỉ chứa thông tin cốt lõi của booking)
         $dataBooking = [
             'tourId' => $tourId,
             'userId' => $userId,
-            'address' => $address,
-            'fullName' => $fullName,
-            'email' => $email,
             'numAdults' => $numAdults,
             'numChildren' => $numChildren,
-            'phoneNumber' => $tel,
             'totalPrice' => $totalPrice
+            // ĐÃ LOẠI BỎ: address, fullName, email, phoneNumber khỏi đây
         ];
 
         $bookingId = $this->booking->createBooking($dataBooking);
 
+        // Dữ liệu cho tbl_checkout (chứa thông tin thanh toán VÀ thông tin khách hàng)
         $dataCheckout = [
             'bookingId' => $bookingId,
             'paymentMethod' => $paymentMethod,
             'amount' => $totalPrice,
             'paymentStatus' => ($paymentMethod === 'paypal-payment' || $paymentMethod === 'momo-payment') ? 'y' : 'n',
+            // BỔ SUNG CÁC TRƯỜNG BẮT BUỘC TỪ tbl_checkout
+            'customerName' => $fullName,
+            'customerEmail' => $email,
+            'customerPhone' => $tel,
+            'customerAddress' => $address
         ];
 
         if ($paymentMethod === 'paypal-payment') {
@@ -100,7 +106,6 @@ class BookingController extends Controller
         ]);
 
     }
-
     public function createMomoPayment(Request $request)
     {
         session()->put('tourId', $request->tourId);

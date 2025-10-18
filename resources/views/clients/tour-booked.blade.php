@@ -13,28 +13,28 @@
                 <div class="form-group">
                     <label for="username">Họ và tên*</label>
                     <input type="text" id="username" placeholder="Nhập Họ và tên" name="fullName"
-                        value="{{ $tour_booked->fullName }}" readonly>
+                        value="{{ $tour_booked->customerName }}" readonly>
                     <span class="error-message" id="usernameError"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email*</label>
                     <input type="email" id="email" placeholder="sample@gmail.com" name="email"
-                        value="{{ $tour_booked->email }}" readonly>
+                        value="{{ $tour_booked->customerEmail }}" readonly>
                     <span class="error-message" id="emailError"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="tel">Số điện thoại*</label>
                     <input type="number" id="tel" placeholder="Nhập số điện thoại liên hệ" name="tel"
-                        value="{{ $tour_booked->phoneNumber }}" readonly>
+                        value="{{ $tour_booked->customerPhone }}" readonly>
                     <span class="error-message" id="telError"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="address">Địa chỉ*</label>
                     <input type="text" id="address" placeholder="Nhập địa chỉ liên hệ" name="address"
-                        value="{{ $tour_booked->address }}" readonly>
+                        value="{{ $tour_booked->customerAddress }}" readonly>
                     <span class="error-message" id="addressError"></span>
                 </div>
 

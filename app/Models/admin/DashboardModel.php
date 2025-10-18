@@ -65,12 +65,12 @@ class DashboardModel extends Model
     {
         return DB::table('tbl_booking')
             ->join('tbl_tours', 'tbl_booking.tourId', '=', 'tbl_tours.tourId')
+            ->join('tbl_checkout', 'tbl_booking.bookingId', '=', 'tbl_checkout.bookingId') // <-- SỬA Ở ĐÂY
             ->where('tbl_booking.bookingStatus', 'b')
             ->orderByDesc('tbl_booking.bookingDate')
-            ->select('tbl_booking.*', 'tbl_tours.title as tour_name') // Chọn tất cả các cột từ tbl_booking và thêm tên tour từ tbl_tours
+            ->select('tbl_booking.*', 'tbl_tours.title as tour_name', 'tbl_checkout.customerName') // <-- VÀ SỬA Ở ĐÂY
             ->take(3)
             ->get();
-
     }
 
     public function getRevenuePerMonth()

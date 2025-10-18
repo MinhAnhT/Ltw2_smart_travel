@@ -1,10 +1,10 @@
 @foreach ($list_booking as $booking)
     <tr>
         <td>{{ $booking->title }}</td>
-        <td>{{ $booking->fullName }}</td>
-        <td>{{ $booking->email }}</td>
-        <td>{{ $booking->phoneNumber }}</td>
-        <td>{{ $booking->address }}</td>
+        <td>{{ $booking->customerName }}</td>  {{-- <--- SỬA Ở ĐÂY --}}
+        <td>{{ $booking->customerEmail }}</td> {{-- <--- SỬA Ở ĐÂY --}}
+        <td>{{ $booking->customerPhone }}</td> {{-- <--- SỬA Ở ĐÂY --}}
+        <td>{{ $booking->customerAddress }}</td> {{-- <--- SỬA Ở ĐÂY --}}
         <td>{{ date('d-m-Y', strtotime($booking->bookingDate)) }}</td>
         <td>{{ $booking->numAdults }}</td>
         <td>{{ $booking->numChildren }}</td>
@@ -29,31 +29,12 @@
                 <img src="{{ asset('admin/assets/images/icon/icon_office.png') }}" class="icon_payment" alt="">
             @endif
         </td>
-
         <td>
-            @if ($booking->paymentStatus == 'n')
-                <span class="badge badge-danger">Chưa thanh toán</span>
-            @else
-                <span class="badge badge-success">Đã thanh toán</span>
-            @endif
-        </td>
-
-        <td>
-            <div class="btn-group">
-                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                </button>
-                <div class="dropdown-menu" x-placement="bottom-start"
-                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(71px, 38px, 0px);">
-                    @if ($booking->bookingStatus == 'b')
-                    <a class="dropdown-item confirm-booking" href="javascript:void(0)" data-bookingId="{{ $booking->bookingId }}"
-                        data-urlConfirm="{{ route('admin.confirm-booking') }}">Xác nhận</a>
-                    @endif
-                    <a class="dropdown-item finish-booking {{ $booking->hide }}" href="javascript:void(0)" data-bookingId="{{ $booking->bookingId }}"
-                        data-urlfinish="{{ route('admin.finish-booking') }}">Đã hoàn thành</a>
-                    <a class="dropdown-item" href="{{ route('admin.booking-detail',['id' => $booking->bookingId]) }}">Xem chi tiết</a>
-                </div>
-            </div>
+            <a href="{{ route('admin.booking-detail', ['id' => $booking->bookingId]) }}"
+                class="btn-action-listTours">
+                <span class="glyphicon glyphicon-eye-open" style="color: #26B99A; font-size:24px"
+                    aria-hidden="true"></span>
+            </a>
         </td>
     </tr>
 @endforeach

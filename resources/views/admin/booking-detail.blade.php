@@ -47,10 +47,10 @@
                                             <div class="col-sm-4 invoice-col">
                                                 Từ
                                                 <address>
-                                                    <strong>{{ $invoice_booking->fullName }}</strong>
-                                                    <br>{{ $invoice_booking->address }}
-                                                    <br>Số điện thoại: {{ $invoice_booking->phoneNumber }}
-                                                    <br>Email:{{ $invoice_booking->email }}
+                                                    <strong>{{ $invoice_booking->customerName }}</strong>
+                                                    <br>{{ $invoice_booking->customerAddress }}
+                                                    <br>Số điện thoại: {{ $invoice_booking->customerPhone }}
+                                                    <br>Email:{{ $invoice_booking->customerEmail }}
                                                 </address>
                                             </div>
                                             <!-- /.col -->
@@ -71,7 +71,7 @@
                                                 <br>
                                                 <b>Mã giao dịch:</b> {{ $invoice_booking->transactionId }}
                                                 <br>
-                                                <b>Ngày thanh toán:</b> {{ $invoice_booking->paymentDate }}
+                                                <b>Ngày thanh toán:</b> {{ date('d-m-Y H:i:s', strtotime($invoice_booking->checkoutDate)) }}
                                                 <br>
                                                 <b>Tài khoản:</b> {{ $invoice_booking->userId }}
                                             </div>
@@ -181,7 +181,7 @@
                                     <button class="btn btn-default" onclick="window.print();"><i
                                             class="fa fa-print"></i> Print</button>
                                     <button id="send-pdf-btn" data-bookingid= "{{ $invoice_booking->bookingId }}"
-                                        data-email={{ $invoice_booking->email }}
+                                        data-email={{ $invoice_booking->customerEmail }}
                                         data-urlSendMail={{ route('admin.send.pdf') }}
                                         class="btn btn-primary pull-right" style="margin-right: 5px;"><i
                                             class="fa fa-send"></i> Gửi hóa đơn cho khách hàng</button>
