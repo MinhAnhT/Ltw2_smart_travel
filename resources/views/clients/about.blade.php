@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-lg-8 pe-lg-5 me-lg-5">
                             <div class="section-title mb-25">
-                                <h2>Kinh nghiệm và công ty du lịch chuyên nghiệp ở Việt Nam</h2>
+                                <h2 class="benefit-title text-black mb-25">Kinh nghiệm và công ty du lịch chuyên nghiệp ở Việt Nam</h2>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -26,16 +26,12 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <p>Chúng tôi chuyên tạo ra những trải nghiệm thành phố khó quên cho du khách muốn khám phá
-                                trái tim và tâm hồn của cảnh quan đô thị. Các tour du lịch có hướng dẫn viên chuyên
-                                nghiệp của chúng tôi sẽ đưa du khách qua
-                                những con phố sôi động, các địa danh lịch sử và những viên ngọc ẩn giấu của mỗi thành
-                                phố.</p>
+                            <p>Chúng tô<img src="" alt=""> là nền tảng du lịch thông minh, nơi mọi hành trình đều được thiết kế dành riêng cho bạn. Chúng tôi mang đến giải pháp đặt tour toàn diện, lo trọn mọi khâu từ A-Z, giúp bạn an tâm tận hưởng chuyến đi. Với hàng ngàn điểm đến đa dạng và những đánh giá chân thực, việc lựa chọn chưa bao giờ dễ dàng hơn thế.</p>
                             <ul class="list-style-two mt-35">
-                                <li>Cơ quan Trải nghiệm</li>
-                                <li>Đội ngũ Chuyên nghiệp</li>
-                                <li>Du lịch Chi phí Thấp</li>
-                                <li>Hỗ trợ Trực tuyến 24/7</li>
+                                <li>Đặt Tour Toàn Diện</li>
+                                <li>Điểm Đến Hấp Dẫn & Đa Dạng</li>
+                                <li>Trợ Lý Ảo AI 24/7</li>
+                                <li>Cá Nhân Hóa Tối Đa</li>
                             </ul>
                             <a href="{{ route('tours') }}" class="theme-btn style-three mt-30">
                                 <span data-hover="Khám phá Tours">Khám phá Tours</span>
@@ -76,7 +72,7 @@
                             <h5><a href="#">Chúng tôi là công ty đạt giải thưởng</a></h5>
                         </div>
                         <div class="content">
-                            <p>Tại Pinnacle Business Solutions cam kết về sự xuất sắc và đổi mới đã đạt được</p>
+                            <p>Tại Phenikaa Business Solutions cam kết về sự xuất sắc và đổi mới đã đạt được</p>
                         </div>
                     </div>
                     <div class="feature-item style-three bgc-primary">
@@ -104,7 +100,7 @@
             <div class="col-xl-5 col-lg-6">
                 <div class="about-us-content rmb-55" data-aos="fade-left" data-aos-duration="1500" data-aos-offset="50">
                     <div class="section-title mb-25">
-                        <h2>Du lịch với sự tự tin Lý do hàng đầu để chọn công ty của chúng tôi</h2>
+                        <h2 class="benefit-title text-black mb-25">Du lịch với sự tự tin Lý do hàng đầu để chọn công ty của chúng tôi</h2>
                     </div>
                     <p>Chúng tôi hợp tác chặt chẽ với khách hàng để hiểu rõ những thách thức và mục tiêu, cung
                         cấp các giải pháp tùy chỉnh để nâng cao hiệu quả, tăng lợi nhuận và thúc đẩy tăng trưởng bền
@@ -147,7 +143,7 @@
             <div class="col-lg-12">
                 <div class="section-title text-center counter-text-wrap mb-50" data-aos="fade-up"
                     data-aos-duration="1500" data-aos-offset="50">
-                    <h2>Gặp gỡ những hướng dẫn viên du lịch giàu kinh nghiệm của chúng tôi</h2>
+                    <h2 class="benefit-title text-black">Gặp gỡ những hướng dẫn viên du lịch giàu kinh nghiệm của chúng tôi</h2>
                     <p>Website <span class="count-text plus bgc-primary" data-speed="3000" data-stop="34500">0</span>
                         trải nghiệm phổ biến nhất mà bạn sẽ nhớ</p>
                 </div>
@@ -158,15 +154,15 @@
             <div class="col-xl-3 col-lg-4 col-sm-6">
                 <div class="team-item hover-content" data-aos="fade-up" data-aos-duration="1500"
                     data-aos-offset="50">
-                    <img src="{{ asset('clients/assets/images/team/guide-dien.jpg') }}" alt="Guide">
+                    <img src="{{ asset('clients/assets/images/team/guide-anh.png') }}" alt="Guide">
                     <div class="content">
-                        <h6>NGUYEN MINH DIEN</h6>
+                        <h6>Minh Anh</h6>
                         <span class="designation">Founder</span>
                         <div class="social-style-one inner-content">
                             <a href="contact.html"><i class="fab fa-twitter"></i></a>
-                            <a href="https://www.facebook.com/dienne.dev"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/share/16DQDeE7v7/"><i class="fab fa-facebook-f"></i></a>
                             <a href="contact.html"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.youtube.com/@dienne248"><i class="fab fa-youtube"></i></a>
+                            <a href="contact.html"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
@@ -174,15 +170,15 @@
             <div class="col-xl-3 col-lg-4 col-sm-6">
                 <div class="team-item hover-content" data-aos="fade-up" data-aos-duration="1500"
                     data-aos-offset="50">
-                    <img src="{{ asset('clients/assets/images/team/guide-ngan.jpg') }}" alt="Guide">
+                    <img src="{{ asset('clients/assets/images/team/guide-thu.png') }}" alt="Guide">
                     <div class="content">
-                        <h6>BAO NGAN</h6>
+                        <h6>Hà Thu</h6>
                         <span class="designation">Co-founder</span>
                         <div class="social-style-one inner-content">
                             <a href="contact.html"><i class="fab fa-twitter"></i></a>
-                            <a href="https://www.facebook.com/dienne.dev"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/share/17e7mywFym/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
                             <a href="contact.html"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.youtube.com/@dienne248"><i class="fab fa-youtube"></i></a>
+                            <a href="contact.html"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
@@ -198,7 +194,7 @@
     <div class="container">
         <div class="section-title text-center text-white counter-text-wrap mb-50" data-aos="fade-up"
             data-aos-duration="1500" data-aos-offset="50">
-            <h2>Làm thế nào để hưởng lợi từ các chuyến du lịch của chúng tôi</h2>
+            <h2 class="benefit-title">Hưởng lợi từ các chuyến du lịch của chúng tôi</h2>
             <p>Website <span class="count-text plus" data-speed="3000" data-stop="34500">0</span> phổ biến nhất
                 kinh nghiệm bạn sẽ nhớ</p>
         </div>
@@ -208,8 +204,10 @@
                 <div class="feature-item style-two">
                     <div class="icon"><i class="flaticon-save-money"></i></div>
                     <div class="content">
-                        <h5><a href="{{ route('tours') }}">Đảm bảo giá tốt nhất</a></h5>
-                        <p>Cam kết giá ưu đãi nhất, giúp bạn tiết kiệm tối đa chi phí du lịch.</p>
+                        <h5><a href="{{ route('tours') }}">Tối Ưu Chi Phí Thông Minh</a></h5>
+                        <p>Nền tảng của chúng tôi luôn nghiên cứu, thiết kế tour du lịch hấp dẫn với mức giá tối ưu, giúp bạn tiết kiệm chi phí mà vẫn đảm bảo một chuyến đi với chất lượng vượt trội.
+
+                        </p>
                     </div>
                 </div>
             </div>
@@ -218,7 +216,7 @@
                 <div class="feature-item style-two">
                     <div class="icon"><i class="flaticon-travel-1"></i></div>
                     <div class="content">
-                        <h5><a href="{{ route('tours') }}">Điểm đến đa dạng</a></h5>
+                        <h5><a href="{{ route('tours') }}">Gợi Ý Dành Riêng Cho Bạn</a></h5>
                         <p>Hàng nghìn điểm đến hấp dẫn, phù hợp mọi sở thích và phong cách du lịch.</p>
                     </div>
                 </div>
@@ -228,8 +226,8 @@
                 <div class="feature-item style-two">
                     <div class="icon"><i class="flaticon-booking"></i></div>
                     <div class="content">
-                        <h5><a href="{{ route('tours') }}">Đặt chỗ nhanh</a></h5>
-                        <p>Quy trình đặt chỗ đơn giản, nhanh chóng, đảm bảo chuyến đi suôn sẻ.
+                        <h5><a href="{{ route('tours') }}">Lên Kế Hoạch Liền Mạch</a></h5>
+                        <p>Từ ý tưởng đến lúc xách ba lô lên đường chỉ trong vài phút. Quy trình đặt tour toàn diện, tự động và cực kỳ đơn giản.</p>
                         </p>
                     </div>
                 </div>
@@ -239,8 +237,8 @@
                 <div class="feature-item style-two">
                     <div class="icon"><i class="flaticon-guidepost"></i></div>
                     <div class="content">
-                        <h5><a href="{{ route('tours') }}">Hướng dẫn du lịch tốt</a></h5>
-                        <p>Đội ngũ hướng dẫn tận tâm, giàu kinh nghiệm, đồng hành cùng bạn mọi hành trình.</p>
+                        <h5><a href="{{ route('tours') }}">Trợ Lý AI Đồng Hành 24/7</a></h5>
+                        <p>KTrợ lý trực tuyến của chúng tôi luôn sẵn sàng giải đáp mọi thắc mắc về chuyến đi ngay lập tức. Nhận được sự hỗ trợ bạn cần, bất kể ngày hay đêm, để có một hành trình an tâm.</p>
                     </div>
                 </div>
             </div>

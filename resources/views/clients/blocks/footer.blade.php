@@ -14,7 +14,7 @@
                             chuyến đi đều
                             liền mạch và làm phong phú thêm những viên ngọc ẩn giấu</p>
                         <div class="social-style-one mt-15">
-                            <a href="https://www.facebook.com/dienne.dev"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/share/16DQDeE7v7/"><i class="fab fa-facebook-f"></i></a>
                             <a href="contact.html"><i class="fab fa-youtube"></i></a>
                             <a href="contact.html"><i class="fab fa-pinterest"></i></a>
                             <a href="contact.html"><i class="fab fa-twitter"></i></a>
@@ -24,7 +24,7 @@
                 <div class="col-xl-5 col-lg-6" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1500"
                     data-aos-offset="50">
                     <div class="section-title counter-text-wrap mb-35">
-                        <h2>Đăng ký nhận bản tin</h2>
+                        <h2 class="benefit-title">Đăng ký nhận bản tin</h2>
                         <p>Website <span class="count-text plus" data-speed="3000" data-stop="34500">0</span> trải
                             nghiệm phổ biến nhất mà bạn sẽ nhớ</p>
                     </div>
@@ -100,9 +100,9 @@
                             <h5>Liên hệ</h5>
                         </div>
                         <ul class="list-style-one">
-                            <li><i class="fal fa-map-marked-alt"></i> 470 Tran Dai Nghia, Ngu Hanh Son, Da Nang</li>
+                            <li><i class="fal fa-map-marked-alt"></i> P. Nguyễn Trác, Yên Nghĩa, Hà Đông, Hà Nội</li>
                             <li><i class="fal fa-envelope"></i> <a
-                                    href="mailto:minhdien.dev@gmail.com">minhdien.dev@gmail.com</a></li>
+                                    href="mailto:anhthuduongbinhmy.dev@gmail.com">anhthuduongbinhmy@gmail.com</a></li>
                             <li><i class="fal fa-clock"></i> Thứ 2 - Thứ 6, 08am - 05pm</li>
                             <li><i class="fal fa-phone-volume"></i> <a href="callto:+88012334588">+880 (123)
                                     345 88</a></li>
@@ -117,7 +117,7 @@
             <div class="row">
                 <div class="col-lg-5">
                     <div class="copyright-text text-center text-lg-start">
-                        <p>@Copy 2024 <a href="{{ route('home') }}">Travela</a>, All rights reserved</p>
+                        <p>@Copy 2025 <a href="{{ route('home') }}">Travela</a>, All rights reserved</p>
                     </div>
                 </div>
                 <div class="col-lg-7 text-center text-lg-end">

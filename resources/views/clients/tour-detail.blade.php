@@ -1,96 +1,12 @@
-@include('clients.blocks.header')
-<section class="page-banner-two rel z-1">
-    <div class="container-fluid">
-        <hr class="mt-0">
-        <div class="container">
-            <div class="banner-inner pt-15 pb-25">
-                <h2 class="page-title mb-10 aos-init aos-animate" data-aos="fade-left" data-aos-duration="1500"
-                    data-aos-offset="50">{{ $tourDetail->destination }}</h2>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-20 aos-init aos-animate" data-aos="fade-right"
-                        data-aos-delay="200" data-aos-duration="1500" data-aos-offset="50">
-                        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                        <li class="breadcrumb-item active">{{ $title }}</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
+@include('clients.blocks.header_home')
+{{-- Sửa đổi ở đây: Thay background-image thành background-color --}}
+<section class="page-banner-two rel z-1 text-white"
+    style="background-color: #000000; padding-top: px; padding-bottom: 100px;border-radius: 20px; /* Bo tròn góc: Điều chỉnh giá trị này */
+        width: 9s0%;          
+        margin: 10px auto;     
+        overflow: hidden;">
+    
 </section>
-<!-- Tour Gallery start -->
- <style>
-    /* Bạn nên chuyển đoạn CSS này vào file CSS chung của dự án */
-    .tour-gallery-five {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr; /* Cột 1 rộng gấp đôi 2 cột còn lại */
-        grid-template-rows: 1fr 1fr; /* 2 hàng có chiều cao bằng nhau */
-        gap: 10px; /* Khoảng cách giữa các ảnh */
-        height: 550px; /* Điều chỉnh chiều cao tổng thể của gallery */
-        border-radius: 12px;
-        overflow: hidden; /* Đảm bảo các ảnh bo góc theo container */
-    }
-
-    .tour-gallery-five .gallery-item {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .tour-gallery-five .gallery-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Giữ tỷ lệ ảnh, không bị méo */
-        transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
-    }
-
-    .tour-gallery-five .gallery-item:hover img {
-        transform: scale(1.05); /* Phóng to nhẹ khi hover */
-        filter: brightness(0.9); /* Hơi tối ảnh đi một chút */
-    }
-
-    /* Định vị từng ảnh vào lưới */
-    .tour-gallery-five .item-1 {
-        grid-column: 1 / 2; /* Chiếm từ cột 1 đến trước cột 2 */
-        grid-row: 1 / 3;    /* Chiếm từ hàng 1 đến trước hàng 3 (2 hàng) */
-    }
-    .tour-gallery-five .item-2 {
-        grid-column: 2 / 3;
-        grid-row: 1 / 2;
-    }
-    .tour-gallery-five .item-3 {
-        grid-column: 3 / 4;
-        grid-row: 1 / 2;
-    }
-    .tour-gallery-five .item-4 {
-        grid-column: 2 / 3;
-        grid-row: 2 / 3;
-    }
-    .tour-gallery-five .item-5 {
-        grid-column: 3 / 4;
-        grid-row: 2 / 3;
-    }
-
-    /* Responsive cho màn hình điện thoại */
-    @media (max-width: 768px) {
-        .tour-gallery-five {
-            grid-template-columns: 1fr; /* Chuyển tất cả về 1 cột */
-            grid-template-rows: auto;    /* Chiều cao tự động */
-            height: auto;
-        }
-
-        /* Reset vị trí cho từng item trên mobile */
-        .tour-gallery-five .gallery-item {
-            grid-column: auto;
-            grid-row: auto;
-            height: 250px; /* Đặt chiều cao chung cho các ảnh */
-        }
-
-        .tour-gallery-five .item-1 {
-            height: 350px; /* Ảnh chính to hơn một chút */
-        }
-    }
-</style>
-
 <div class="tour-gallery">
     <div class="container-fluid">
         <div class="tour-gallery-five">
