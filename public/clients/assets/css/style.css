@@ -8425,6 +8425,11 @@ body:not(.homepage) .main-content-area {
 .page-banner-area .banner-inner .breadcrumb .breadcrumb-item::before {
     color: #ffffff; /* Chữ trắng cho tiêu đề/breadcrumb của banner */
 }
-
+.destination-item .image img {
+    width: 100%;
+    height: 250px; /* Đặt một chiều cao cố định cho tất cả các ảnh tour */
+    object-fit: cover; /* Dòng này là quan trọng nhất! */
+    object-position: center; /* Đảm bảo ảnh luôn được căn giữa */
+}
 
 /* ===== HẾT CSS TÙY CHỈNH ===== */
