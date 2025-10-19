@@ -1,4 +1,4 @@
-@include('clients.blocks.header')
+@include('clients.blocks.header_home')
 @include('clients.blocks.banner')
 
 <!-- Tour Grid Area start -->

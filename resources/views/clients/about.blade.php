@@ -1,8 +1,9 @@
-@include('clients.blocks.header')
+@include('clients.blocks.header_home')
 @include('clients.blocks.banner')
 
 
 <!-- About Area start -->
+<div class="main-content-area">
 <section class="about-area-two py-100 rel z-1">
     <div class="container">
         <div class="row justify-content-between">
@@ -47,6 +48,7 @@
         </div>
     </div>
 </section>
+</div>
 <!-- About Area end -->
 
 

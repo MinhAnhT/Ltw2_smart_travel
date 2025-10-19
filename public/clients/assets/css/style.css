@@ -4300,7 +4300,10 @@ h6, .h6, blockquote {
   display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  min-height: 590px;
+  min-height: 700px;
+  background-color: #ffffff;
+  position: relative; /* Đảm bảo lớp phủ ::before hoạt động đúng */
+  z-index: 1;
   border-radius: 10px;
   -webkit-box-align: end;
   -ms-flex-align: end;
@@ -4311,9 +4314,7 @@ h6, .h6, blockquote {
   flex-direction: column;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
-  justify-content: flex-end;
-  margin-left: 30px;
-  margin-right: 30px; }
+  justify-content: flex-end; }
   @media only screen and (max-width: 991px) {
     .page-banner-area {
       margin-left: 15px;
@@ -4355,6 +4356,18 @@ h6, .h6, blockquote {
   -ms-flex-pack: justify;
   justify-content: space-between; }
   .banner-inner .page-title {
+    /* Áp dụng font chữ giống trang chủ */
+    font-family: var(--heading-font); /* Font Outfit */
+
+    /* Áp dụng kích thước giống trang chủ (điều chỉnh nếu cần) */
+    font-size: 90px;
+    line-height: 1.1; /* Giống style inline của hero-title */
+
+    /* Áp dụng độ đậm giống trang chủ */
+    font-weight: 700; /* Giống hero-title */
+    color: white;
+    margin-bottom: 25px; /* Giống style inline của hero-title */
+    text-transform: uppercase; /* Thêm nếu muốn chữ in hoa giống trang chủ */
     max-width: 800px;
     margin-right: 15px; }
     @media only screen and (min-width: 1200px) {
@@ -8345,4 +8358,73 @@ blockquote {
     90% { opacity: 0.95; }
     100% { opacity: 0; transform: translateY(-20px);}
 }
+/* ===== ÁP DỤNG NỀN TRANG CHỦ CHO TRANG CON ===== */
+
+/* Áp dụng nền và lớp phủ cho page wrapper trên trang không phải trang chủ */
+body:not(.homepage) .page-wrapper {
+    background-image: url('../images/hero/hero.jpg'); /* Kiểm tra lại đường dẫn nếu cần */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    z-index: 1;
+}
+
+body:not(.homepage) .page-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Chỉnh độ tối */
+    z-index: -1;
+    filter: brightness(0.8);
+}
+
+/* Định dạng khu vực nội dung chính để NẰM TRÊN nền */
+body:not(.homepage) .main-content-area {
+   background-color: #ffffff; /* Nền trắng đặc */
+   /* Thêm padding-top để đẩy nội dung xuống dưới header absolute */
+   padding-top: 150px; /* Chỉnh giá trị này dựa trên chiều cao header của bạn */
+   padding-bottom: 50px; /* Padding dưới tùy chọn */
+   position: relative; /* Đảm bảo xếp chồng đúng */
+   z-index: 2; /* Đảm bảo nội dung nằm trên lớp phủ ::before */
+   /* Bạn có thể cần margin-left/right nếu dùng container-fluid */
+   /* margin-left: 30px; */
+   /* margin-right: 30px; */
+   /* border-radius: 10px; */ /* Tùy chọn */
+}
+
+/* Tùy chọn: Chỉnh màu chữ mặc định nếu cần */
+/* body:not(.homepage) { color: #f0f0f0; } */
+/* body:not(.homepage) .main-content-area h1, ... { color: #1C231F; } */ /* Reset màu chữ nội dung */
+
+
+/* Đảm bảo page-wrapper không có padding-top khi dùng header absolute */
+/* Rule này có thể đã tồn tại, đảm bảo nó có ở đó */
+.page-wrapper {
+    padding-top: 0 !important;
+}
+
+/* Chỉnh sửa banner mặc định để không gây xung đột */
+.page-banner-area {
+    background: none; /* Làm banner mặc định trong suốt */
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    min-height: 700px; /* Để nội dung quyết định chiều cao hoặc đặt một giá trị nhỏ */
+    padding-top: 150px; /* Thêm padding giống main-content-area */
+    padding-bottom: 40px; /* Chỉnh nếu cần */
+    /* Xóa ảnh nền nếu banner có ảnh riêng */
+}
+/* Đảm bảo chữ trên banner hiển thị rõ */
+.page-banner-area .banner-inner .page-title,
+.page-banner-area .banner-inner .breadcrumb .breadcrumb-item,
+.page-banner-area .banner-inner .breadcrumb .breadcrumb-item::before {
+    color: #ffffff; /* Chữ trắng cho tiêu đề/breadcrumb của banner */
+}
+
+
 /* ===== HẾT CSS TÙY CHỈNH ===== */

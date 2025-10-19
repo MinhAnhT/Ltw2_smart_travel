@@ -5,7 +5,7 @@
 --}}
 
 <section class="hero-area bgc-black rel z-2"
-    style="position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+    style="position: relative; height: 115vh; display: flex; align-items: center; justify-content: center; text-align: center;">
 
     <div class="main-hero-image bgs-cover"
         style="background-image: url({{ asset('clients/assets/images/hero/hero.jpg') }}); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: brightness(0.8);">
