@@ -15,7 +15,6 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet">
-
     <!-- Flaticon -->
     <link rel="stylesheet" href="{{ asset('clients/assets/css/flaticon.min.css') }}">
     <!-- Font Awesome -->
@@ -52,7 +51,7 @@
 
     <!-- Import CSS for Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>

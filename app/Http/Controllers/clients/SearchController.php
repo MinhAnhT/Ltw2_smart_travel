@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Tour;
+use Illuminate\Support\Facades\Log;
 
 class SearchController extends Controller
 {

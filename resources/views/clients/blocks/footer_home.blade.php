@@ -91,8 +91,247 @@
 
 {{-- THAY THẾ BẰNG ĐOẠN NÀY --}}
 </div>
+{{-- =================================================== --}}
+{{--            BẮT ĐẦU CODE CHATBOT AI                   --}}
+{{-- =================================================== --}}
+
+<style>
+    .travela-chatbot {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+    }
+  .chat-bubble {
+    width: 60px;
+    height: 60px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    /* THÊM DÒNG NÀY ĐỂ ÁP DỤNG ANIMATION */
+    animation: shake 1.5s ease-in-out infinite; /* Tên, Thời gian, Kiểu, Lặp lại */
+    animation-delay: 3s; /* Bắt đầu rung sau 3 giây */
+    }
+    .chat-bubble:hover {
+        transform: scale(1.1);
+    }
+
+    /* ... (CSS cho .travela-chatbot, .chat-bubble giữ nguyên) ... */
+
+    .chat-window {
+        width: 300px;
+        height: 400px; /* <--- GIẢM CHIỀU CAO XUỐNG ĐÂY */
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        position: absolute;
+        bottom: 80px;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    .chat-window.show {
+        display: flex;
+    }
+
+    .chat-header {
+        background: #007bff;
+        color: white;
+        padding: 12px 15px; /* Giảm padding chiều dọc một chút */
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px; /* Giảm font chữ tiêu đề */
+        position: relative;
+        flex-shrink: 0; /* Ngăn header bị co lại */
+    }
+    .chat-header #close-chat {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%); /* Căn giữa nút đóng */
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .chat-body {
+        flex-grow: 1;
+        padding: 12px; /* Giảm padding một chút */
+        overflow-y: auto;
+        background: #f4f7f6;
+    }
+    .message {
+        margin-bottom: 10px; /* Giảm khoảng cách tin nhắn */
+        padding: 8px 12px;
+        border-radius: 18px;
+        max-width: 85%; /* Tăng nhẹ chiều rộng tối đa */
+        word-wrap: break-word;
+        font-size: 14px; /* Giảm nhẹ font chữ tin nhắn */
+        line-height: 1.4;
+    }
+    .message.bot {
+        background: #e9e9eb;
+        color: #333;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+    }
+    .message.user {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+        margin-left: auto;
+        border-bottom-right-radius: 4px;
+    }
+
+    .chat-footer {
+        display: flex;
+        padding: 8px 10px; /* Giảm padding */
+        border-top: 1px solid #ddd;
+        flex-shrink: 0; /* Ngăn footer bị co lại */
+    }
+    .chat-footer #chat-input {
+        flex-grow: 1;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        padding: 6px 12px; /* Giảm padding */
+        margin-right: 8px; /* Giảm khoảng cách */
+        font-size: 14px;
+    }
+    .chat-footer #send-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px; /* Giảm kích thước nút */
+        height: 36px;
+        font-size: 14px; /* Giảm kích thước icon */
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    @keyframes shake {
+    0%, 100% { transform: translateX(0); } /* Vị trí ban đầu và cuối cùng */
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); } /* Lắc sang trái */
+    20%, 40%, 60%, 80% { transform: translateX(3px); } /* Lắc sang phải */
+    }
+</style>
+
+<div class="travela-chatbot">
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <span>TravelaBot</span>
+            <span id="close-chat">&times;</span>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="message bot">Chào bạn! Tôi là TravelaBot. Tôi có thể giúp bạn hỏi đáp về thanh toán, hủy tour, địa chỉ...</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+            <button id="send-btn"><i class="fa fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <div class="chat-bubble" id="chat-bubble">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+</div>
+{{-- =================================================== --}}
+{{--            KẾT THÚC CODE CHATBOT AI                   --}}
+{{-- =================================================== --}}
 {{-- Tải tất cả script đã được hợp nhất --}}
 @include('clients.blocks.footer_scripts')
+{{-- =================================================== --}}
+{{--            JAVASCRIPT CỦA CHATBOT AI                --}}
+{{-- =================================================== --}}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
 
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChat = document.getElementById('close-chat');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatBody = document.getElementById('chat-body');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // Kiểm tra xem các phần tử có tồn tại không trước khi gán sự kiện
+    if (chatBubble) { 
+        chatBubble.addEventListener('click', () => {
+            if (chatWindow) chatWindow.classList.add('show');
+            chatBubble.style.display = 'none';
+        });
+    }
+
+    if (closeChat) { 
+        closeChat.addEventListener('click', () => {
+            if (chatWindow) chatWindow.classList.remove('show');
+            if (chatBubble) chatBubble.style.display = 'flex';
+        });
+    }
+
+    function sendMessage() {
+        if (!chatInput) return; 
+        const messageText = chatInput.value.trim();
+        if (messageText === '') return;
+
+        appendMessage(messageText, 'user');
+        chatInput.value = '';
+
+        fetch("{{ route('chatbot.query') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({ message: messageText })
+        })
+        .then(response => {
+             if (!response.ok) { 
+                throw new Error(`HTTP error! status: ${response.status}`);
+             }
+             return response.json();
+         })
+        .then(data => {
+            if (data && data.reply) { 
+                 appendMessage(data.reply, 'bot');
+            } else {
+                 appendMessage('Xin lỗi, tôi không nhận được phản hồi hợp lệ.', 'bot');
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi khi gọi Chatbot:', error);
+            appendMessage('Xin lỗi, tôi đang gặp sự cố. Bạn vui lòng thử lại sau.', 'bot');
+        });
+    }
+
+    function appendMessage(text, type) {
+        if (!chatBody) return; 
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', type);
+        messageElement.innerHTML = text; // Dùng innerHTML để thẻ <a> hoạt động
+        chatBody.appendChild(messageElement);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    if (sendBtn) { 
+        sendBtn.addEventListener('click', sendMessage);
+    }
+
+    if (chatInput) { 
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
+});
+</script>
+{{-- =================================================== --}}
 </body>
 </html>

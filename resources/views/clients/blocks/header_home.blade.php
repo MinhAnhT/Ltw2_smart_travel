@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="{{ asset('clients/assets/css/custom-css.css') }}" />
     <!-- Import CSS for Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="homepage">

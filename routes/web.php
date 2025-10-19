@@ -24,7 +24,7 @@ use App\Http\Controllers\clients\MyTourController;
 use App\Http\Controllers\clients\PayPalController;
 use App\Http\Controllers\clients\SearchController;
 use App\Http\Controllers\clients\TourBookedController;
-
+use App\Http\Controllers\clients\ChatbotController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -152,3 +152,5 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/reply-contact', [ContactManagementController::class, 'replyContact'])->name('admin.reply-contact');
 
 });
+    // Route cho Chatbot AI
+    Route::post('/chatbot-query', [ChatbotController::class, 'handleQuery'])->name('chatbot.query');

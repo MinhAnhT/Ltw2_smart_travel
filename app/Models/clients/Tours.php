@@ -333,5 +333,53 @@ class Tours extends Model
 
         return $tourSearch;
     }
+    /**
+     * Tìm các tour dựa trên tên địa điểm (destination)
+     * @param string $destinationName Tên địa điểm (ví dụ: 'hà giang')
+     * @return \Illuminate\Support\Collection Trả về danh sách các tour tìm được
+     */
+    public function findToursByDestination($destinationName)
+    {
+        // Sử dụng LIKE để tìm kiếm gần đúng trong cột destination
+        // Lấy tối đa 3 tour để tránh trả về quá nhiều
+        return DB::table($this->table)
+                 ->where('destination', 'LIKE', '%' . $destinationName . '%')
+                 ->where('availability', 1) // Chỉ lấy tour đang hoạt động
+                 ->orderBy('startDate', 'desc') // Ưu tiên tour mới hơn
+                 ->limit(3) // Giới hạn số lượng kết quả
+                 ->get();
+    }
+    /**
+     * Tìm các tour dựa trên nhiều tiêu chí
+     * @param array $criteria Mảng chứa các tiêu chí ['destination' => ..., 'max_price' => ..., 'duration_days' => ...]
+     * @return \Illuminate\Support\Collection
+     */
+    public function findToursByCriteria($criteria)
+    {
+        $query = DB::table($this->table)->where('availability', 1); // Bắt đầu với query cơ bản
 
+        // 1. Thêm điều kiện địa điểm (bắt buộc phải có trong logic Controller hiện tại)
+        if (!empty($criteria['destination'])) {
+            $query->where('destination', 'LIKE', '%' . $criteria['destination'] . '%');
+        }
+
+        // 2. Thêm điều kiện giá tối đa (nếu có)
+        if (!empty($criteria['max_price'])) {
+            // So sánh với giá người lớn
+            $query->where('priceAdult', '<=', $criteria['max_price']);
+        }
+
+        // 3. Thêm điều kiện thời gian (nếu có)
+        // Lưu ý: Cột 'time' của bạn đang là dạng text (ví dụ: "3 ngày 2 đêm").
+        // Việc lọc chính xác theo số ngày sẽ phức tạp hơn.
+        // Cách đơn giản nhất là tìm chuỗi con, ví dụ tìm "3 ngày".
+        if (!empty($criteria['duration_days'])) {
+            $query->where('time', 'LIKE', '%' . $criteria['duration_days'] . ' ngày%');
+        }
+
+        // Sắp xếp và giới hạn kết quả
+        return $query->orderBy('startDate', 'desc')
+                     ->limit(3) // Vẫn giới hạn 3 kết quả
+                     ->get();
+    }
 }
