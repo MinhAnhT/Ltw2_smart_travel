@@ -182,22 +182,34 @@ class BookingController extends Controller
     }
     
 
-    public function handlePaymentMomoCallback(Request $request)
+   public function handlePaymentMomoCallback(Request $request)
     {
         $resultCode = $request->input('resultCode');
-        $transIdMomo = $request->query('transId');
-        // dd(session()->get('tourId'));
-        $tourId = session()->get('tourId'); 
+        // Lấy transId, nó sẽ là null nếu không tồn tại
+        $transIdMomo = $request->query('transId'); 
+        
+        $tourId = session()->get('tourId');
+        
+        // Thêm kiểm tra nếu session không còn
+        if (!$tourId) {
+            // Nếu không có tourId, không thể hiển thị trang booking
+             return redirect()->route('home')->withErrors('Đã xảy ra lỗi hoặc phiên làm việc hết hạn.');
+        }
+
         $tour = $this->tour->getTourDetail($tourId);
         session()->forget('tourId');
+
         // Handle the payment response
         if ($resultCode == '0') {
             $title = 'Đã thanh toán';
+            // Trả về view với transIdMomo
             return view('clients.booking', compact('title', 'tour', 'transIdMomo'));
         } else {
             // Payment failed, handle the error accordingly
             $title = 'Thanh toán thất bại';
-            return view('clients.booking', compact('title', 'tour'));
+
+            // SỬA Ở ĐÂY: Luôn trả về $transIdMomo (sẽ là null)
+            return view('clients.booking', compact('title', 'tour', 'transIdMomo'));
         }
     }
 

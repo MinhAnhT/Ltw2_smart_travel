@@ -191,6 +191,14 @@
                                             data-urlConfirm="{{ route('admin.confirm-booking') }}"><i
                                                 class="fa fa-credit-card"></i> Xác nhận</button>
                                     @endif
+                                    @if ($invoice_booking->bookingStatus == 'y')
+                                        <button class="btn btn-primary pull-right finish-booking"
+                                            data-bookingId="{{ $invoice_booking->bookingId }}"
+                                            data-urlFinish="{{ route('admin.finish-booking') }}"
+                                            style="margin-right: 5px;">
+                                            <i class="fa fa-check"></i> Hoàn thành
+                                        </button>
+                                    @endif
                                     <button id="received-money" data-bookingid= "{{ $invoice_booking->bookingId }}"
                                          data-urlPaid="{{ route('admin.received') }}"
                                         class="btn btn-info pull-right {{ $hide }}" style="margin-right: 5px;"><i

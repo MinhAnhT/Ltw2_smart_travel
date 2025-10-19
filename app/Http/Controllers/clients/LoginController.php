@@ -8,7 +8,7 @@ use App\Models\clients\Login;
 use App\Models\clients\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Log;
 class LoginController extends Controller
 {
 
@@ -27,7 +27,7 @@ class LoginController extends Controller
     }
 
 
-    public function register(Request $request)
+  public function register(Request $request)
     {
         $username_regis = $request->username_regis;
         $email = $request->email;
@@ -41,46 +41,23 @@ class LoginController extends Controller
             ]);
         }
 
-        $activation_token = Str::random(60); // Tạo token ngẫu nhiên
         // Nếu không tồn tại, thực hiện đăng ký
         $dataInsert = [
             'username'         => $username_regis,
             'email'            => $email,
             'password'         => md5($password_regis),
-            'activation_token' => $activation_token
+            'activation_token' => null, // Không cần token nữa
+            'isActive'         => 'y'  // <-- KÍCH HOẠT TÀI KHOẢN NGAY LẬP TỨC
         ];
 
+        // 1. Tạo tài khoản
         $this->login->registerAcount($dataInsert);
 
-        // Gửi email kích hoạt
-        $this->sendActivationEmail($email, $activation_token);
-
+        // 2. Trả về thông báo thành công
         return response()->json([
             'success' => true,
-            'message' => 'Đăng ký thành công! Vui lòng kiểm tra email để kích hoạt tài khoản.'
+            'message' => 'Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.'
         ]);
-    }
-
-    public function sendActivationEmail($email, $token)
-    {
-        $activation_link = route('activate.account', ['token' => $token]);
-
-        Mail::send('clients.mail.emails_activation', ['link' => $activation_link], function ($message) use ($email) {
-            $message->to($email);
-            $message->subject('Kích hoạt tài khoản của bạn');
-        });
-    }
-
-    public function activateAccount($token)
-    {
-        $user = $this->login->getUserByToken($token);
-        if ($user) {
-            $this->login->activateUserAccount($token);
-
-            return redirect('/login')->with('message', 'Tài khoản của bạn đã được kích hoạt!');
-        } else {
-            return redirect('/login')->with('error', 'Mã kích hoạt không hợp lệ!');
-        }
     }
 
     //Xử lý người dùng đăng nhập
@@ -95,10 +72,12 @@ class LoginController extends Controller
         ];
 
         $user_login = $this->login->login($data_login);
-        $userId = $this->user->getUserId($username);
-        $user = $this->user->getUser($userId);
+      
 
         if ($user_login != null) {
+            $userId = $this->user->getUserId($username);
+            $user = $this->user->getUser($userId);
+
             $request->session()->put('username', $username);
             $request->session()->put('avatar', $user->avatar);
             toastr()->success("Đăng nhập thành công!",'Thông báo');
@@ -123,7 +102,7 @@ class LoginController extends Controller
         $request->session()->forget('username');
         $request->session()->forget('avatar');
         $request->session()->forget('userId');
-        toastr()->success("Đăng xuất thành công!",'Thông báo');
+        toastr()->success("Đăng xuất thành công!");
         return redirect()->route('home');
     }
 
