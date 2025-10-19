@@ -11,14 +11,18 @@
                     </div>
 
                     <div class="title_right">
-                        <div class="col-md-5 col-sm-5  form-group pull-right top_search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">Go!</button>
-                                </span>
+                        <form action="{{ url()->current() }}" method="GET">
+                            <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" 
+                                           placeholder="Tìm theo tên, username, email..." 
+                                           value="{{ request('search') }}">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">Tìm</button>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
 
@@ -88,7 +92,10 @@
                                 </div>
                             </div>
                         @endforeach
-
+                        <div class="col-md-12">
+                             {{-- appends() sẽ giữ lại ?search=... khi chuyển trang --}}
+                             {!! $users->appends(request()->query())->links('pagination::bootstrap-4') !!}
+                        </div>
                     </div>
                 </div>
             </div>

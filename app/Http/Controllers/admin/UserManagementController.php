@@ -15,12 +15,32 @@ class UserManagementController extends Controller
     {
         $this->users = new UserModel();
     }
-    public function index()
+    public function index(Request $request) // <-- THÊM Request $request
     {
         $title = 'Quản lý người dùng';
 
-        $users = $this->users->getAllUsers();
+        // 1. Lấy từ khóa tìm kiếm
+        $search = $request->input('search');
 
+        // 2. Bắt đầu query từ Model
+        // (Giả sử UserModel của bạn dùng Eloquent, nếu không bạn cần sửa lại hàm trong Model)
+        $query = $this->users->query(); // Bắt đầu một query mới
+
+        // 3. Nếu có tìm kiếm, thêm điều kiện WHERE
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('fullname', 'LIKE', "%{$search}%")
+                  ->orWhere('username', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%") // Giả sử bạn có cột email
+                  ->orWhere('phone', 'LIKE', "%{$search}%"); // Giả sử bạn có cột phone
+            });
+        }
+        
+        // 4. Lấy kết quả CÓ PHÂN TRANG (12 user mỗi trang)
+        // Sắp xếp theo userId giảm dần để thấy user mới nhất
+        $users = $query->orderBy('userId', 'desc')->paginate(12);
+
+        // 5. Xử lý thông tin phụ (fullname, avatar, statusText)
         foreach ($users as $user) {
             if (!$user->fullname) {
                 $user->fullname = "Unnamed";
@@ -29,8 +49,6 @@ class UserManagementController extends Controller
                 $user->avatar = 'unnamed.png';
             }
 
-            // SỬA LỖI 1: TẠO BIẾN MỚI 'statusText' VÀ KHÔNG GHI ĐÈ 'isActive'
-            // 'isActive' gốc (y, n, b, d) phải được giữ nguyên để view xử lý logic
             switch ($user->isActive) {
                 case 'y':
                     $user->statusText = 'Đã kích hoạt';
