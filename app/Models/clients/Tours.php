@@ -382,4 +382,51 @@ class Tours extends Model
                      ->limit(3) // Vẫn giới hạn 3 kết quả
                      ->get();
     }
+   /**
+     * Tìm các tour tương tự dựa trên cùng điểm đến chính (destination)
+     * @param int $currentTourId ID của tour đang xem (để loại trừ chính nó)
+     * @param string $destination Chuỗi destination đầy đủ của tour đang xem
+     * @param int $limit Số lượng tour tương tự muốn lấy
+     * @return \Illuminate\Support\Collection
+     */
+    public function findSimilarToursByDestination($currentTourId, $destination, $limit = 3)
+    {
+        // Cố gắng tách lấy tên địa danh chính (phần trước dấu '–')
+        // Ví dụ: "Hà Giang – Quản Bạ..." -> "Hà Giang"
+        $parts = explode('–', $destination); // Tách chuỗi bằng dấu '–' (chú ý đây là en dash, không phải gạch ngang thường)
+        $mainLocation = trim($parts[0]); // Lấy phần đầu tiên và xóa khoảng trắng thừa
+
+        // Nếu không tách được hoặc phần đầu rỗng, dùng tạm chuỗi gốc (ít chính xác hơn)
+        if (empty($mainLocation)) {
+            $mainLocation = $destination;
+        }
+
+        // --- Bắt đầu truy vấn ---
+        $query = DB::table($this->table)
+            // Tìm các tour có destination BẮT ĐẦU BẰNG tên địa danh chính
+            // Hoặc chứa tên địa danh chính (linh hoạt hơn)
+             ->where(function ($q) use ($mainLocation) {
+                 $q->where('destination', 'LIKE', $mainLocation . '%') // Bắt đầu bằng...
+                   ->orWhere('destination', 'LIKE', '%' . $mainLocation . '%'); // Hoặc chứa... (tùy chọn)
+             })
+            ->where('tourId', '!=', $currentTourId) // Loại trừ tour đang xem
+            ->where('availability', 1) // Chỉ lấy tour đang hoạt động
+            ->orderByRaw('CASE WHEN destination LIKE ? THEN 0 ELSE 1 END, startDate DESC', [$mainLocation . '%']) // Ưu tiên tour bắt đầu bằng tên chính xác
+            ->limit($limit); // Giới hạn số lượng
+
+        $similarTours = $query->get();
+        // --- Kết thúc truy vấn ---
+
+        // Lấy thêm ảnh và rating (giữ nguyên như cũ)
+        foreach ($similarTours as $tour) {
+            $tour->images = DB::table('tbl_images')
+                ->where('tourId', $tour->tourId)
+                ->limit(1)
+                ->pluck('imageUrl');
+            $tour->rating = $this->reviewStats($tour->tourId)->averageRating ?? 0;
+            $tour->rating = round($tour->rating, 1);
+        }
+
+        return $similarTours;
+    }
 }

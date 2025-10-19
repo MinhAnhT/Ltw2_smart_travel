@@ -17,16 +17,21 @@ class TourDetailController extends Controller
         parent::__construct(); // Gọi constructor của Controller để khởi tạo $user
         $this->tours = new Tours();
     }
-    public function index($id = 0)
+   public function index($id = 0)
     {
         $title = 'Chi tiết tours';
         $userId = $this->getUserId();
 
         $tourDetail = $this->tours->getTourDetail($id);
+        // Xử lý nếu không tìm thấy tour
+        if (!$tourDetail) {
+             abort(404, 'Tour không tồn tại.');
+        }
+
         $getReviews = $this->tours->getReviews($id);
         $reviewStats = $this->tours->reviewStats($id);
 
-        $avgStar = round($reviewStats->averageRating);
+        $avgStar = round($reviewStats->averageRating ?? 0); // Gán 0 nếu null
         $countReview = $reviewStats->reviewCount;
 
         $checkReviewExist = $this->tours->checkReviewExist($id, $userId);
@@ -36,30 +41,8 @@ class TourDetailController extends Controller
             $checkDisplay = 'hide';
         }
 
-        
-        // Gọi API Python để lấy danh sách tour liên quan
-        try {
-            $apiUrl = 'http://127.0.0.1:5555/api/tour-recommendations';
-            $response = Http::get($apiUrl, [
-                'tour_id' => $id
-            ]);
-
-            if ($response->successful()) {
-                $relatedTours = $response->json('related_tours');
-            } else {
-                $relatedTours = [];
-            }
-        } catch (\Exception $e) {
-            // Xử lý lỗi khi gọi API
-            $relatedTours = [];
-            \Log::error('Lỗi khi gọi API liên quan: ' . $e->getMessage());
-        }
-
-        $id_toursRe = $relatedTours;
-
-        $tourRecommendations = $this->tours->toursRecommendation($id_toursRe);
-        // dd($tourRecommendations);    
-        // dd($avgStar);
+        // Lấy tour tương tự bằng cách tìm theo cùng destination trong CSDL
+        $tourRecommendations = $this->tours->findSimilarToursByDestination($tourDetail->tourId, $tourDetail->destination);
 
         return view('clients.tour-detail', compact('title', 'tourDetail', 'getReviews', 'avgStar', 'countReview', 'checkDisplay','tourRecommendations'));
     }
