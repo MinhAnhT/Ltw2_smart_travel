@@ -33,7 +33,7 @@ class ChatbotController extends Controller
         // --- Xử lý logic hội thoại ---
 
         // ƯU TIÊN 1: Chào hỏi hoặc Reset
-        if (str_contains($lowerUserMessage, 'chào') || str_contains($lowerUserMessage, 'hello') || str_contains($lowerUserMessage, 'hi')) {
+        if (str_contains($lowerUserMessage, 'chào') || str_contains($lowerUserMessage, 'hello') || str_contains($lowerUserMessage, 'hi') || str_contains($lowerUserMessage, 'halo')) {
              $responseMessage = 'Chào bạn! Tôi là TravelaBot, tôi có thể giúp bạn tìm tour, hỏi đáp chính sách hoặc xem thời tiết hôm nay. Bạn cần hỗ trợ gì ạ?';
              // Reset context khi chào hỏi lại
              $context = ['state' => 'idle', 'criteria' => ['destination' => null, 'duration_days' => null, 'max_price' => null], 'last_bot_question' => null];
