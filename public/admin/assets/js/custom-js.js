@@ -462,29 +462,36 @@ $(document).ready(function () {
     $(document).on("click", ".delete-tour", function (e) {
         e.preventDefault();
         var tourId = $(this).data("tourid");
-        var urlDelete = $(this).attr("href");
-
+        var urlDelete = $(this).data('url');
+        console.log("URL to delete:", urlDelete); 
+        if (!urlDelete) {
+            alert("Lỗi: Không tìm thấy URL để xóa. Vui lòng kiểm tra thuộc tính data-url.");
+            return; 
+        }
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
 
-        $.ajax({
-            type: "POST",
-            url: urlDelete,
-            data: {
-                _token: csrfToken,
-                tourId: tourId,
-            },
-            success: function (response) {
-                if (response.success) {
-                    $("#tbody-listTours").html(response.data);
-                    toastr.success(response.message);
-                } else {
-                    toastr.error(response.message);
-                }
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
-            },
-        });
+        if (confirm('Bạn có chắc chắn muốn xóa tour này không?')) {
+            $.ajax({
+                type: "POST",
+                url: urlDelete, // Sử dụng URL đúng
+                data: {
+                    _token: csrfToken,
+                    tourId: tourId,
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#tbody-listTours").html(response.data); // Cập nhật bảng
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error("AJAX Error deleting tour:", textStatus, errorThrown, xhr.responseText);
+                    toastr.error("Có lỗi xảy ra khi xóa. Vui lòng thử lại sau.");
+                },
+            });
+        }
     });
 
     /********************************************

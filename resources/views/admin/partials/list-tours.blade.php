@@ -26,8 +26,9 @@
             </button>
         </td>
         <td>
-            <button type="button" class="btn btn-sm btn-danger delete-tour" 
-                data-tourid="{{ $tour->tourId }}">
+            <button type="button" class="btn btn-sm btn-danger delete-tour"
+                    data-tourid="{{ $tour->tourId }}"
+                    data-url="{{ route('admin.delete-tour') }}"> {{-- <-- Đảm bảo có dòng này --}}
                 Xóa
             </button>
         </td>

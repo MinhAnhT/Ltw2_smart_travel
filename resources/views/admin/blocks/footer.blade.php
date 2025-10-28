@@ -53,8 +53,7 @@
 <script src="{{ asset('admin/vendors/jszip/dist/jszip.min.js') }}"></script>
 <script src="{{ asset('admin/vendors/pdfmake/build/pdfmake.min.js') }}"></script>
 <script src="{{ asset('admin/vendors/pdfmake/build/vfs_fonts.js') }}"></script>
-<!-- Dropzone.js -->
-<script src="{{ asset('admin/vendors/dropzone/dist/min/dropzone.min.js') }}"></script>
+
 <!-- Custom Theme Scripts -->
 <script src="{{ asset('admin/build/js/custom.js') }}"></script>
 <!-- jQuery Smart Wizard -->
@@ -62,11 +61,9 @@
 {{-- jquery-toast  --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-{{-- ckeditor  --}}
-<script src="{{ asset('admin/assets/js/ckeditor/ckeditor.js') }}"></script>
 
-{{-- datetimepicker  --}}
-<script src="{{ asset('admin/assets/js/jquery.datetimepicker.full.min.js') }}"></script>
+
+
 <!-- Custom Scripts By DevDien -->
 <script src="{{ asset('admin/assets/js/custom-js.js') }}"></script>
 
