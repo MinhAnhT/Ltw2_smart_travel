@@ -11,19 +11,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <title>{{ $title }} - Admin</title>
+  <!-- 1. jQuery PHẢI được load ĐẦU TIÊN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    
+    <!-- 2. Popper.js (yêu cầu của Bootstrap 4) -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 
-   
+    <!-- 3. Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <!-- Bootstrap -->
     <link href="{{ asset('admin/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('admin/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <!-- NProgress -->
     <link href="{{ asset('admin/vendors/nprogress/nprogress.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/vendors/jQuery-Smart-Wizard/styles/smart_wizard.css') }}" rel="stylesheet" type="text/css">
-    {{-- Hoặc nếu bạn muốn dùng theme khác của Smart Wizard --}}
-    {{-- <link href="{{ asset('admin/vendors/jQuery-Smart-Wizard/styles/smart_wizard_theme_arrows.css') }}" rel="stylesheet" type="text/css"> --}}
     <!-- iCheck -->
     <link href="{{ asset('admin/vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
 
