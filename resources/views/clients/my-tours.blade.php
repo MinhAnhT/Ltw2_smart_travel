@@ -1,4 +1,4 @@
-@include('clients.blocks.header')
+@include('clients.blocks.header_home')
 @include('clients.blocks.banner')
 <!-- Tour List Area start -->
 <section class="tour-list-page py-100 rel z-1">
@@ -6,15 +6,22 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-10 rmb-75">
                 <div class="shop-sidebar mb-30">
-                    @if (!$toursPopular->isEmpty())
+                    @if (isset($toursPopular) && !$toursPopular->isEmpty()) {{-- Kiểm tra isset() cho chắc chắn --}}
                         <div class="widget widget-tour" data-aos="fade-up" data-aos-duration="1500"
                             data-aos-offset="50">
                             <h6 class="widget-title">Phổ biến Tours</h6>
                             @foreach ($toursPopular as $tour)
                                 <div class="destination-item tour-grid style-three bgc-lighter">
                                     <div class="image">
-                                        <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0]) }}"
-                                            alt="Tour">
+                                        {{-- SỬA LỖI AN TOÀN: Kiểm tra xem ảnh có tồn tại không --}}
+                                        @if (isset($tour->images) && $tour->images->isNotEmpty())
+                                            <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0]) }}"
+                                                alt="{{ $tour->title }}">
+                                        @else
+                                            {{-- Ảnh mặc định nếu tour không có ảnh --}}
+                                            <img src="{{ asset('admin/assets/images/default-tour-image.jpg') }}"
+                                                alt="Ảnh đang cập nhật">
+                                        @endif
                                     </div>
                                     <div class="content">
                                         <div class="destination-header">
@@ -22,7 +29,8 @@
                                                 {{ $tour->destination }}</span>
                                             <div class="ratting">
                                                 <i class="fas fa-star"></i>
-                                                <span>{{ $tour->rating }}</span>
+                                                {{-- SỬA LỖI AN TOÀN: Dùng ?? 0 và làm tròn --}}
+                                                <span>{{ round($tour->rating ?? 0, 1) }}</span>
                                             </div>
                                         </div>
                                         <h6><a
@@ -32,9 +40,14 @@
                                 </div>
                             @endforeach
                         </div>
+                    @else
+                        {{-- Hiển thị thông báo nếu không có tour phổ biến --}}
+                        <div class="widget widget-tour" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50">
+                            <h6 class="widget-title">Phổ biến Tours</h6>
+                            <p>Hiện chưa có tour phổ biến nào.</p>
+                        </div>
                     @endif
                 </div>
-
             </div>
             <div class="col-lg-9">
                 @foreach ($myTours as $tour)

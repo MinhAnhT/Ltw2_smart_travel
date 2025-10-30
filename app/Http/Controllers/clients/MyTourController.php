@@ -5,7 +5,7 @@ namespace App\Http\Controllers\clients;
 use App\Http\Controllers\Controller;
 use App\Models\clients\Tours;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Http; // Không cần nữa
 
 class MyTourController extends Controller
 {
@@ -22,34 +22,14 @@ class MyTourController extends Controller
         $title = 'Tours đã đặt';
         $userId = $this->getUserId();
         
+        // Lấy danh sách tour của tôi
         $myTours = $this->user->getMyTours($userId);
-        $userId = $this->getUserId();
-        if ($userId) {
-            // Gọi API Python để lấy danh sách tour được gợi ý cho từng người dùng 
-            try {
-                $apiUrl = 'http://127.0.0.1:5555/api/user-recommendations';
-                $response = Http::get($apiUrl, [
-                    'user_id' => $userId
-                ]);
 
-                if ($response->successful()) {
-                    $tourIds = $response->json('recommended_tours');
-                    $tourIds = array_slice($tourIds, 0, 2);
-                } else {
-                    $tourIds = [];
-                }
-            } catch (\Exception $e) {
-                // Xử lý lỗi khi gọi API
-                $tourIds = [];
-                \Log::error('Lỗi khi gọi API liên quan: ' . $e->getMessage());
-            }
-
-
-            $toursPopular = $this->tours->toursRecommendation($tourIds);
-            // dd($toursPopular);
-        }else {
-            $toursPopular = $this->tours->toursPopular(6);
-        }
+        // === SỬA LỖI Ở ĐÂY ===
+        // Luôn lấy 6 tour phổ biến nhất từ CSDL
+        // Bất kể người dùng đăng nhập hay không.
+        $toursPopular = $this->tours->toursPopular(3);
+        // === KẾT THÚC SỬA LỖI ===
 
         return view('clients.my-tours', compact('title', 'myTours','toursPopular'));
     }

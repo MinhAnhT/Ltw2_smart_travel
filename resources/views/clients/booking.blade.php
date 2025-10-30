@@ -1,4 +1,4 @@
-@include('clients.blocks.header')
+@include('clients.blocks.header_home')
 @include('clients.blocks.banner')
 
 <section class="container" style="margin-top:50px; margin-bottom: 100px">
