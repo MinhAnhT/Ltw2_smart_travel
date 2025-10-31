@@ -21,12 +21,15 @@ class DashboardModel extends Model
         $totalAmount = DB::table('tbl_checkout')
             ->where('paymentStatus', 'y')
             ->sum('amount');
-
+        $countUsers = DB::table('tbl_users')
+            ->where('userRole', 'client') // Chỉ đếm client, không đếm admin
+            ->count();
         // Trả về mảng chứa các dữ liệu tổng hợp
         return [
             'tourWorking' => $tourWorking,
             'countBooking' => $countBooking,
             'totalAmount' => $totalAmount,
+            'countUsers' => $countUsers,
         ];
     }
 

@@ -34,7 +34,7 @@ class UserProfileController extends Controller
             'fullName' => $fullName,
             'address' => $address,
             'email' => $email,
-            'phoneNumber' => $phone
+            'phone' => $phone
         ];
 
         $userId = $this->getUserId();
